@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="قطوف البر - عسل طبيعي ومنتجات النحل">
+  <title>قطوف البر | Qotof Elbr</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="announcement">🍯 قطوف البر — خيرات الطبيعة في كل قطرة</div>
+
+  <header class="header" id="top">
+    <div class="container nav">
+      <a class="brand" href="#top">
+        <span class="brand-mark">🐝</span>
+        <span><b>قطوف البر</b><small>QOTOF ELBR</small></span>
+      </a>
+      <nav class="desktop-nav">
+        <a href="#home">الرئيسية</a><a href="#products">منتجاتنا</a><a href="#about">عن قطوف البر</a><a href="#reviews">آراء العملاء</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" id="themeBtn" aria-label="الوضع الليلي">☾</button>
+        <button class="cart-btn" id="cartBtn">🛒 <span>السلة</span><em id="cartCount">0</em></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-bg"></div>
+      <div class="container hero-content">
+        <div class="hero-copy">
+          <span class="eyebrow">من الطبيعة إلى بيتك</span>
+          <h1>عسل طبيعي<br><strong>بروح البر</strong></h1>
+          <p>اختيار بعناية من أجود خيرات النحل، بطعم أصيل وجودة تليق ببيتك.</p>
+          <div class="hero-buttons"><a class="btn primary" href="#products">تسوق الآن</a><a class="btn ghost" href="#about">اكتشف قصتنا</a></div>
+          <div class="trust-row"><span>✓ جودة مختارة</span><span>✓ تعبئة بعناية</span><span>✓ توصيل للمحافظات</span></div>
+        </div>
+        <div class="hero-jar" aria-hidden="true">
+          <div class="honey-glow"></div><div class="jar"><div class="jar-lid"></div><div class="jar-label"><b>قطوف البر</b><small>QOTOF ELBR</small><span>عسل طبيعي</span></div></div>
+          <span class="leaf l1">🍃</span><span class="leaf l2">🌿</span><span class="bee">🐝</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="products">
+      <div class="container">
+        <div class="section-head"><div><span class="eyebrow">اختياراتنا</span><h2>منتجات قطوف البر</h2></div><p>اختر الوزن المناسب واستمتع بطعم طبيعي أصيل.</p></div>
+        <div class="filters" id="filters"></div>
+        <div class="product-grid" id="productGrid"></div>
+      </div>
+    </section>
+
+    <section class="feature-band">
+      <div class="container features">
+        <div><b>🍯</b><strong>طبيعي بعناية</strong><span>منتجات مختارة بعناية</span></div>
+        <div><b>🌿</b><strong>من خيرات البر</strong><span>نكهة مستوحاة من الطبيعة</span></div>
+        <div><b>📦</b><strong>تغليف آمن</strong><span>جاهز ليصل إليك بأفضل صورة</span></div>
+        <div><b>🚚</b><strong>توصيل للمحافظات</strong><span>خيارات شحن واضحة قبل الطلب</span></div>
+      </div>
+    </section>
+
+    <section class="section about" id="about">
+      <div class="container about-grid">
+        <div class="about-art"><div class="ring"></div><div class="about-honey">🍯</div></div>
+        <div><span class="eyebrow">حكاية قطوف البر</span><h2>طبيعة صافية، وطعم لا يُنسى.</h2><p>في قطوف البر نؤمن أن أجمل المنتجات هي التي تحتفظ بروح مصدرها. لذلك نصنع تجربة بسيطة: عسل مختار، عرض أنيق، واهتمام بكل تفصيلة حتى تصل القطوف إلى بابك.</p><div class="stats"><div><b>100%</b><span>اهتمام بالجودة</span></div><div><b>3</b><span>أوزان متاحة</span></div><div><b>1500ج</b><span>حد الشحن المجاني</span></div></div></div>
+      </div>
+    </section>
+
+    <section class="section reviews" id="reviews">
+      <div class="container"><div class="section-head center"><div><span class="eyebrow">قالوا عنّا</span><h2>آراء عملائنا</h2></div></div>
+        <div class="review-grid" id="reviewGrid"></div>
+      </div>
+    </section>
+
+    <section class="cta"><div class="container"><span>قطوف البر</span><h2>خلّي الطبيعة تحلّي يومك 🍯</h2><a class="btn light" href="#products">ابدأ طلبك الآن</a></div></section>
+  </main>
+
+  <footer><div class="container footer"><div class="brand"><span class="brand-mark">🐝</span><span><b>قطوف البر</b><small>QOTOF ELBR</small></span></div><p>© <span id="year"></span> قطوف البر. جميع الحقوق محفوظة.</p><a href="admin.html">لوحة الإدارة</a></div></footer>
+
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="drawer-head"><h3>سلة مشترياتك</h3><button id="closeCart">×</button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-summary"><div><span>الإجمالي</span><b id="subtotal">0 ج.م</b></div><small>الشحن يُحسب عند إتمام الطلب حسب المحافظة.</small><button class="btn primary full" id="checkoutBtn">إتمام الطلب</button></div>
+  </aside>
+  <div class="overlay" id="overlay"></div>
+
+  <div class="modal" id="checkoutModal">
+    <div class="modal-box"><button class="modal-close" id="closeModal">×</button><span class="eyebrow">آخر خطوة</span><h2>بيانات التوصيل</h2>
+      <form id="checkoutForm">
+        <label>الاسم الكامل<input name="name" required placeholder="اكتب اسمك"></label>
+        <label>رقم الهاتف<input name="phone" required inputmode="tel" placeholder="01xxxxxxxxx"></label>
+        <label>المحافظة<select name="governorate" id="governorate" required></select></label>
+        <label>العنوان بالتفصيل<textarea name="address" required placeholder="المنطقة، الشارع، رقم المنزل..."></textarea></label>
+        <label>ملاحظات (اختياري)<textarea name="notes" placeholder="أي ملاحظات للطلب"></textarea></label>
+        <div class="checkout-box"><div><span>قيمة المنتجات</span><b id="checkoutSubtotal">0 ج.م</b></div><div><span>الشحن</span><b id="shippingCost">0 ج.م</b></div><div class="total"><span>الإجمالي</span><b id="checkoutTotal">0 ج.م</b></div></div>
+        <p class="payment-note">💳 في حالة وجود رسوم شحن، يتم تحويل رسوم الشحن مقدمًا عبر فودافون كاش حسب بيانات المتجر.</p>
+        <button class="btn primary full" type="submit">تأكيد الطلب عبر واتساب</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
