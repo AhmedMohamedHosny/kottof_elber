@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>قطوف البر | لوحة الإدارة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-body">
+<div id="loginView" class="login-screen"><div class="login-card"><div class="brand center-brand"><span class="brand-mark">🐝</span><span><b>قطوف البر</b><small>ADMIN PANEL</small></span></div><h1>لوحة التحكم</h1><p>أدخل كلمة المرور لإدارة المتجر.</p><input id="adminPassword" type="password" placeholder="كلمة المرور"><button class="btn primary full" id="loginBtn">دخول</button><small class="hint">كلمة المرور الافتراضية: qotof2026</small><a href="index.html">العودة للمتجر</a></div></div>
+<div id="adminApp" class="admin-app hidden">
+<header class="admin-top"><div class="brand"><span class="brand-mark">🐝</span><span><b>قطوف البر</b><small>ADMIN</small></span></div><div><a class="btn ghost" href="index.html">عرض المتجر</a><button class="btn primary" id="logoutBtn">خروج</button></div></header>
+<main class="admin-main">
+<div class="admin-title"><div><span class="eyebrow">Control Center</span><h1>إدارة المتجر</h1></div><button class="btn primary" id="saveAll">حفظ كل التعديلات</button></div>
+<div class="admin-tabs"><button class="active" data-tab="productsTab">المنتجات والمخزون</button><button data-tab="ordersTab">الطلبات</button><button data-tab="settingsTab">المظهر والإعدادات</button><button data-tab="reviewsTab">الآراء</button></div>
+<section id="productsTab" class="tab-pane active"><div class="panel"><div class="panel-head"><h2>المنتجات</h2><button class="btn primary" id="addProduct">+ منتج جديد</button></div><div id="productAdminList"></div></div></section>
+<section id="ordersTab" class="tab-pane"><div class="panel"><div class="panel-head"><h2>الطلبات</h2><button class="btn ghost" id="exportExcel">تصدير Excel</button></div><div id="ordersList"></div></div></section>
+<section id="settingsTab" class="tab-pane"><div class="panel settings-grid"><div><h2>بيانات المتجر</h2><label>رقم واتساب <input id="waNumber"></label><label>رقم فودافون كاش <input id="vodafone"></label><label>لون أساسي <input id="primaryColor" type="color"></label><label>لون ثانوي <input id="secondaryColor" type="color"></label></div><div><h2>الشحن</h2><label>الشحن المجاني من <input id="freeShipping" type="number"></label><p>يمكن تعديل أسعار المحافظات من الجدول أدناه.</p><div id="shippingAdmin"></div></div></div></section>
+<section id="reviewsTab" class="tab-pane"><div class="panel"><div class="panel-head"><h2>آراء العملاء</h2><button class="btn primary" id="addReview">+ إضافة رأي</button></div><div id="reviewsAdmin"></div></div></section>
+</main></div>
+<script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>window.QotofAdmin&&window.QotofAdmin.init());
+</script>
+</body></html>
