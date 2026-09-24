@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المتجر | زيدان ستورز</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Cairo', sans-serif; background: #f5f5f5; color: #333; direction: rtl; }
+    a { text-decoration: none; color: inherit; }
+
+    /* TOPBAR */
+    .top-bar { background:#1a1a1a; color:#ccc; font-size:13px; padding:7px 0; }
+    .top-bar .container { max-width:1280px; margin:0 auto; padding:0 20px; display:flex; justify-content:space-between; align-items:center; }
+    .top-bar a { color:#ccc; }
+    .top-bar a:hover { color:#c8973a; }
+    .top-bar-right { display:flex; gap:20px; }
+
+    /* HEADER */
+    header { background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.08); position:sticky; top:0; z-index:1000; }
+    .header-inner { max-width:1280px; margin:0 auto; padding:15px 20px; display:flex; align-items:center; gap:25px; }
+    .logo h1 { font-size:26px; font-weight:900; color:#1a1a1a; }
+    .logo span { color:#c8973a; }
+    .search-bar { flex:1; }
+    .search-bar form { display:flex; border:2px solid #e0e0e0; border-radius:4px; overflow:hidden; }
+    .search-bar input { flex:1; padding:10px 15px; font-family:'Cairo',sans-serif; font-size:14px; border:none; outline:none; }
+    .search-bar button { background:#c8973a; color:#fff; border:none; padding:10px 20px; cursor:pointer; }
+    .header-actions { display:flex; gap:18px; align-items:center; }
+    .header-action { text-align:center; cursor:pointer; position:relative; }
+    .header-action i { font-size:20px; color:#333; display:block; }
+    .header-action span { font-size:11px; color:#777; }
+    .cart-badge { position:absolute; top:-5px; right:-8px; background:#c8973a; color:#fff; width:17px; height:17px; border-radius:50%; font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+
+    /* NAV */
+    nav { background:#1a1a1a; }
+    .nav-inner { max-width:1280px; margin:0 auto; padding:0 20px; display:flex; align-items:center; }
+    nav ul { list-style:none; display:flex; }
+    nav ul li a { display:block; padding:13px 16px; color:#fff; font-size:13px; font-weight:600; transition:background 0.2s; }
+    nav ul li a:hover, nav ul li.active a { background:#c8973a; }
+
+    /* BREADCRUMB */
+    .breadcrumb { background:#fff; border-bottom:1px solid #eee; padding:12px 0; }
+    .breadcrumb .container { max-width:1280px; margin:0 auto; padding:0 20px; font-size:13px; color:#888; }
+    .breadcrumb a { color:#888; }
+    .breadcrumb a:hover { color:#c8973a; }
+    .breadcrumb span { margin:0 8px; }
+
+    /* LAYOUT */
+    .shop-layout { max-width:1280px; margin:30px auto; padding:0 20px; display:grid; grid-template-columns:260px 1fr; gap:25px; }
+
+    /* SIDEBAR */
+    .sidebar {}
+    .sidebar-widget { background:#fff; border:1px solid #e8e8e8; border-radius:8px; padding:20px; margin-bottom:15px; }
+    .widget-title { font-size:15px; font-weight:700; color:#1a1a1a; margin-bottom:15px; padding-bottom:10px; border-bottom:2px solid #f0f0f0; position:relative; }
+    .widget-title::after { content:''; position:absolute; bottom:-2px; right:0; width:40px; height:2px; background:#c8973a; }
+
+    /* Price range */
+    .price-range { margin-top:10px; }
+    .price-inputs { display:flex; gap:10px; align-items:center; margin-bottom:12px; }
+    .price-inputs input { flex:1; padding:8px; border:1px solid #ddd; border-radius:4px; font-family:'Cairo',sans-serif; font-size:13px; text-align:center; }
+    .price-slider { width:100%; height:4px; background:#e0e0e0; border-radius:2px; position:relative; }
+    .price-fill { position:absolute; right:10%; left:10%; height:100%; background:#c8973a; border-radius:2px; }
+    .price-dot { position:absolute; top:50%; transform:translateY(-50%); width:14px; height:14px; border-radius:50%; background:#fff; border:2px solid #c8973a; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,0.2); }
+    .btn-filter { width:100%; padding:9px; background:#1a1a1a; color:#fff; border:none; border-radius:4px; font-family:'Cairo',sans-serif; font-size:13px; font-weight:600; cursor:pointer; margin-top:12px; }
+    .btn-filter:hover { background:#c8973a; }
+
+    /* Checkboxes */
+    .checkbox-list { list-style:none; }
+    .checkbox-list li { margin-bottom:8px; }
+    .checkbox-list label { display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; color:#555; }
+    .checkbox-list input[type="checkbox"] { accent-color:#c8973a; width:15px; height:15px; }
+    .checkbox-list .count { margin-right:auto; font-size:11px; color:#bbb; }
+
+    /* Color swatches */
+    .color-grid { display:flex; flex-wrap:wrap; gap:8px; }
+    .color-swatch {
+      width:28px; height:28px; border-radius:50%; cursor:pointer;
+      border:3px solid transparent; transition:0.2s;
+    }
+    .color-swatch.active, .color-swatch:hover { border-color:#c8973a; transform:scale(1.15); }
+
+    /* Size buttons */
+    .size-grid { display:flex; flex-wrap:wrap; gap:6px; }
+    .size-btn {
+      padding:5px 12px; border:1px solid #ddd; border-radius:4px;
+      font-family:'Cairo',sans-serif; font-size:12px; cursor:pointer; background:#fff;
+    }
+    .size-btn.active, .size-btn:hover { background:#1a1a1a; color:#fff; border-color:#1a1a1a; }
+
+    /* MAIN CONTENT */
+    .shop-header { background:#fff; padding:15px 20px; border-radius:8px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between; border:1px solid #e8e8e8; }
+    .results-count { font-size:14px; color:#666; }
+    .results-count strong { color:#1a1a1a; }
+    .shop-controls { display:flex; gap:12px; align-items:center; }
+    .select-sort { padding:8px 14px; border:1px solid #ddd; border-radius:4px; font-family:'Cairo',sans-serif; font-size:13px; background:#f9f9f9; cursor:pointer; outline:none; }
+    .view-toggle { display:flex; gap:5px; }
+    .view-btn { width:32px; height:32px; border:1px solid #ddd; border-radius:4px; background:#fff; cursor:pointer; font-size:14px; color:#999; display:flex; align-items:center; justify-content:center; }
+    .view-btn.active { background:#1a1a1a; color:#fff; border-color:#1a1a1a; }
+
+    /* PRODUCT GRID */
+    .products-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; }
+    .product-card { background:#fff; border:1px solid #eee; border-radius:8px; overflow:hidden; transition:box-shadow 0.25s; position:relative; }
+    .product-card:hover { box-shadow:0 8px 25px rgba(0,0,0,0.1); }
+    .product-img { position:relative; aspect-ratio:1; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#f8f8f8; }
+    .product-img .emoji { font-size:80px; transition:transform 0.4s; }
+    .product-card:hover .product-img .emoji { transform:scale(1.08); }
+    .badge { position:absolute; top:10px; right:10px; padding:3px 9px; border-radius:3px; font-size:11px; font-weight:700; }
+    .badge-sale { background:#e74c3c; color:#fff; }
+    .badge-new { background:#27ae60; color:#fff; }
+    .badge-hot { background:#f39c12; color:#fff; }
+    .product-actions { position:absolute; bottom:-45px; left:0; right:0; display:flex; justify-content:center; gap:6px; padding:8px; background:rgba(255,255,255,0.95); transition:bottom 0.3s; }
+    .product-card:hover .product-actions { bottom:0; }
+    .action-btn { background:#fff; border:1px solid #eee; width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:13px; color:#333; display:flex; align-items:center; justify-content:center; transition:0.2s; }
+    .action-btn:hover { background:#c8973a; color:#fff; border-color:#c8973a; }
+    .cart-btn { background:#1a1a1a; color:#fff; border:none; border-radius:4px; padding:7px 16px; font-family:'Cairo',sans-serif; font-size:12px; font-weight:600; cursor:pointer; flex:1; max-width:160px; transition:0.2s; }
+    .cart-btn:hover { background:#c8973a; }
+    .product-info { padding:14px; }
+    .product-brand { font-size:11px; color:#aaa; margin-bottom:4px; }
+    .product-name { font-size:13px; font-weight:700; color:#1a1a1a; margin-bottom:7px; line-height:1.5; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .product-name:hover { color:#c8973a; }
+    .stars { color:#f5a623; font-size:12px; }
+    .product-price { display:flex; align-items:baseline; gap:8px; margin-top:8px; }
+    .price-now { font-size:17px; font-weight:900; color:#c8973a; }
+    .price-old { font-size:13px; color:#bbb; text-decoration:line-through; }
+    .egp { font-size:12px; color:#888; }
+
+    /* LIST VIEW */
+    .products-list .product-card { display:grid; grid-template-columns:220px 1fr; }
+    .products-list .product-img { aspect-ratio:auto; height:100%; min-height:200px; }
+    .products-list .product-info { padding:20px; display:flex; flex-direction:column; justify-content:space-between; }
+    .products-list .product-name { font-size:16px; -webkit-line-clamp:3; }
+    .products-list .product-desc { font-size:13px; color:#888; line-height:1.7; margin:8px 0; }
+
+    /* PAGINATION */
+    .pagination { display:flex; justify-content:center; gap:6px; margin-top:35px; }
+    .page-btn { width:38px; height:38px; border:1px solid #ddd; border-radius:4px; background:#fff; cursor:pointer; font-family:'Cairo',sans-serif; font-size:14px; display:flex; align-items:center; justify-content:center; transition:0.2s; }
+    .page-btn:hover, .page-btn.active { background:#1a1a1a; color:#fff; border-color:#1a1a1a; }
+    .page-btn.active { background:#c8973a; border-color:#c8973a; }
+
+    /* WHATSAPP */
+    .whatsapp-float { position:fixed; bottom:30px; left:25px; background:#25d366; color:#fff; width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 4px 15px rgba(37,211,102,0.4); z-index:999; }
+
+    /* FOOTER */
+    footer { background:#1a1a1a; color:#888; padding:25px 0; margin-top:50px; }
+    .footer-bottom { max-width:1280px; margin:0 auto; padding:0 20px; text-align:center; font-size:13px; }
+    .footer-logo { font-size:22px; font-weight:900; color:#fff; margin-bottom:8px; }
+    .footer-logo span { color:#c8973a; }
+    .payment-icons { display:flex; gap:8px; justify-content:center; margin-top:10px; flex-wrap:wrap; }
+    .payment-icon { background:#2a2a2a; border-radius:4px; padding:4px 10px; font-size:11px; color:#ccc; }
+
+    @media (max-width:900px) {
+      .shop-layout { grid-template-columns:1fr; }
+      .sidebar { display:none; }
+      .products-grid { grid-template-columns:repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="container">
+    <div><i class="fas fa-phone-alt" style="color:#c8973a;margin-left:5px;"></i> 01000000000</div>
+    <div class="top-bar-right">
+      <a href="#"><i class="fas fa-map-marker-alt"></i> تتبع طلبك</a>
+      <a href="#">مساعدة</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo"><a href="index.html"><h1>زيدان<span>ستورز</span></h1></a></div>
+    <div class="search-bar">
+      <form>
+        <input type="text" placeholder="ابحث: مرتبة، كنبة، ركنة...">
+        <button><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+    <div class="header-actions">
+      <div class="header-action"><i class="fas fa-user-circle"></i><span>حسابي</span></div>
+      <div class="header-action"><i class="far fa-heart"></i><span>المفضلة</span></div>
+      <div class="header-action">
+        <i class="fas fa-shopping-cart"></i><span>السلة</span>
+        <span class="cart-badge">3</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <ul>
+      <li><a href="index.html">الرئيسية</a></li>
+      <li><a href="shop.html">كنب وانتريهات</a></li>
+      <li><a href="shop.html">ركنات</a></li>
+      <li class="active"><a href="shop.html">مراتب</a></li>
+      <li><a href="shop.html">لازي بوي</a></li>
+      <li><a href="shop.html">مفروشات</a></li>
+      <li><a href="shop.html" style="color:#e2b76b;">العروض</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="container">
+    <a href="index.html">الرئيسية</a>
+    <span>›</span>
+    <a href="#">المتجر</a>
+    <span>›</span>
+    <strong style="color:#333;">جميع المنتجات</strong>
+  </div>
+</div>
+
+<!-- SHOP LAYOUT -->
+<div class="shop-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- Categories -->
+    <div class="sidebar-widget">
+      <div class="widget-title">أقسام المنتجات</div>
+      <ul class="checkbox-list">
+        <li>
+          <label>
+            <input type="checkbox" checked>
+            كل المنتجات
+            <span class="count">(94)</span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox">
+            كنب وانتريهات
+            <span class="count">(25)</span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox">
+            ركنات
+            <span class="count">(18)</span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox">
+            مراتب
+            <span class="count">(28)</span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox">
+            لازي بوي
+            <span class="count">(4)</span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox">
+            بن باج
+            <span class="count">(8)</span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox">
+            مخدات
+            <span class="count">(11)</span>
+          </label>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Price Range -->
+    <div class="sidebar-widget">
+      <div class="widget-title">نطاق السعر</div>
+      <div class="price-range">
+        <div class="price-inputs">
+          <input type="text" value="100" placeholder="من">
+          <span>—</span>
+          <input type="text" value="15,000" placeholder="إلى">
+          <span style="font-size:12px;color:#888;">ج.م</span>
+        </div>
+        <div class="price-slider">
+          <div class="price-fill"></div>
+        </div>
+        <button class="btn-filter">تطبيق الفلتر</button>
+      </div>
+    </div>
+
+    <!-- Colors -->
+    <div class="sidebar-widget">
+      <div class="widget-title">الألوان</div>
+      <div class="color-grid">
+        <div class="color-swatch active" style="background:#2c2c2c;" title="أسود"></div>
+        <div class="color-swatch" style="background:#8B4513;" title="بني"></div>
+        <div class="color-swatch" style="background:#D2B48C;" title="بيج"></div>
+        <div class="color-swatch" style="background:#708090;" title="رمادي"></div>
+        <div class="color-swatch" style="background:#fff;border:1px solid #ddd;" title="أبيض"></div>
+        <div class="color-swatch" style="background:#1a3c6a;" title="كحلي"></div>
+        <div class="color-swatch" style="background:#8B0000;" title="بردو"></div>
+        <div class="color-swatch" style="background:#228B22;" title="أخضر"></div>
+      </div>
+    </div>
+
+    <!-- Sizes (Mattresses) -->
+    <div class="sidebar-widget">
+      <div class="widget-title">مقاس المرتبة</div>
+      <div class="size-grid">
+        <button class="size-btn">90×200</button>
+        <button class="size-btn">100×200</button>
+        <button class="size-btn">120×200</button>
+        <button class="size-btn active">140×200</button>
+        <button class="size-btn">160×200</button>
+        <button class="size-btn">180×200</button>
+        <button class="size-btn">200×200</button>
+      </div>
+    </div>
+
+    <!-- Brands -->
+    <div class="sidebar-widget">
+      <div class="widget-title">الماركة</div>
+      <ul class="checkbox-list">
+        <li><label><input type="checkbox" checked>زيدان ستورز<span class="count">(50)</span></label></li>
+        <li><label><input type="checkbox">New Nights<span class="count">(12)</span></label></li>
+        <li><label><input type="checkbox">Comfort Pillow<span class="count">(8)</span></label></li>
+        <li><label><input type="checkbox">German Silver<span class="count">(6)</span></label></li>
+        <li><label><input type="checkbox">Regency<span class="count">(5)</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Rating Filter -->
+    <div class="sidebar-widget">
+      <div class="widget-title">التقييم</div>
+      <ul class="checkbox-list">
+        <li><label><input type="checkbox"><span style="color:#f5a623;">★★★★★</span><span class="count">(38)</span></label></li>
+        <li><label><input type="checkbox"><span style="color:#f5a623;">★★★★☆</span><span class="count">(29)</span></label></li>
+        <li><label><input type="checkbox"><span style="color:#f5a623;">★★★☆☆</span><span class="count">(14)</span></label></li>
+      </ul>
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+    <div class="shop-header">
+      <div class="results-count">
+        عرض <strong>1-12</strong> من <strong>94</strong> منتج
+        <span style="margin-right:15px;font-size:12px;color:#aaa;">|</span>
+        <span style="font-size:12px;color:#aaa;">فلتر نشط: </span>
+        <span style="font-size:12px;background:#fff3dd;color:#c8973a;padding:2px 8px;border-radius:12px;margin-right:5px;">أسود ✕</span>
+      </div>
+      <div class="shop-controls">
+        <select class="select-sort">
+          <option>الأحدث أولاً</option>
+          <option>السعر: من الأقل للأعلى</option>
+          <option>السعر: من الأعلى للأقل</option>
+          <option>الأكثر مبيعاً</option>
+          <option>الأعلى تقييماً</option>
+        </select>
+        <div class="view-toggle">
+          <button class="view-btn active" onclick="setView('grid')" title="شبكة"><i class="fas fa-th"></i></button>
+          <button class="view-btn" onclick="setView('list')" title="قائمة"><i class="fas fa-list"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="products-grid" id="productsContainer">
+
+      <!-- Product 1 -->
+      <div class="product-card">
+        <div class="product-img">
+          <div class="emoji" style="padding:20px;background:#f9f4ec;">🛋️</div>
+          <span class="badge badge-new">جديد</span>
+          <div class="product-actions">
+            <button class="action-btn" title="مفضلة"><i class="far fa-heart"></i></button>
+            <button class="cart-btn" onclick="addToCart(this)">أضف للسلة</button>
+            <button class="action-btn" title="مقارنة"><i class="fas fa-exchange-alt"></i></button>
+            <button class="action-btn" onclick="location.href='product.html'" title="عرض سريع"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">زيدان ستورز</div>
+          <a href="product.html" class="product-name">كنبة نيو كلاسيك جرار مقاس 280سم</a>
+          <div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#aaa;">(24)</span></div>
+          <div class="product-price"><span class="price-now">5,950</span><span class="egp">ج.م</span><span class="price-old">7,200 ج.م</span></div>
+        </div>
+      </div>
+
+      <!-- Product 2 -->
+      <div class="product-card">
+        <div class="product-img">
+          <div class="emoji" style="padding:20px;background:#eef5fc;">🪑</div>
+          <span class="badge badge-sale">-15%</span>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="cart-btn" onclick="addToCart(this)">أضف للسلة</button>
+            <button class="action-btn"><i class="fas fa-exchange-alt"></i></button>
+            <button class="action-btn" onclick="location.href='product.html'"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">زيدان - لازي بوي</div>
+          <a href="product.html" class="product-name">لازي بوي ريكلاينر 3 حركة Delmas</a>
+          <div><span class="stars">★★★★☆</span> <span style="font-size:11px;color:#aaa;">(18)</span></div>
+          <div class="product-price"><span class="price-now">12,321</span><span class="egp">ج.م</span><span class="price-old">14,500 ج.م</span></div>
+        </div>
+      </div>
+
+      <!-- Product 3 -->
+      <div class="product-card">
+        <div class="product-img">
+          <div class="emoji" style="padding:20px;background:#f0faf4;">🛏️</div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="cart-btn" onclick="addToCart(this)">أضف للسلة</button>
+            <button class="action-btn"><i class="fas fa-exchange-alt"></i></button>
+            <button class="action-btn" onclick="location.href='product.html'"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">زيدان - مراتب</div>
+          <a href="product.html" class="product-name">مرتبة كومفورت بيلو توب زيدان</a>
+          <div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#aaa;">(41)</span></div>
+          <div class="product-price"><span class="price-now">4,530</span><span class="egp">ج.م</span></div>
+        </div>
+      </div>
+
+      <!-- Product 4 -->
+      <div class="product-card">
+        <div class="product-img">
+          <div class="emoji" style="padding:20px;background:#fdf0f0;">🛑</div>
+          <span class="badge badge-hot">الأكثر مبيعاً</span>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="cart-btn" onclick="addToCart(this)">أضف للسلة</button>
+            <button class="action-btn"><i class="fas fa-exchange-alt"></i></button>
+            <button class="action-btn" onclick="location.href='product.html'"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">زيدان ستورز</div>
+          <a href="product.html" class="product-name">ركنة زيدان ريكلاينر مقاس 320سم</a>
+          <div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#aaa;">(33)</span></div>
+          <div class="product-price"><span class="price-now">14,000</span><span class="egp">ج.م</span><span class="price-old">16,000 ج.م</span></div>
+        </div>
+      </div>
+
+      <!-- Product 5 -->
+      <div class="product-card">
+        <div class="product-img">
+          <div class="emoji" style="padding:20px;background:#fffbf0;">🌙</div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="cart-btn" onclick="addToCart(this)">أضف للسلة</button>
+            <button class="action-btn"><i class="fas fa-exchange-alt"></i></button>
+            <button class="action-btn" onclick="location.href='product.html'"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">زيدان - مخدات</div>
+          <a href="product.html" class="product-name">مخدة Pure Double Net زيدان</a>
+          <div><span class="stars">★★★★☆</span> <span style="font-size:11px;color:#aaa;">(12)</span></div>
+          <div class="product-price"><span class="price-now">199</span><span class="egp">ج.م</span></div>
+        </div>
+      </div>
+
+      <!-- Product 6 -->
+      <div class="product-card">
+        <div class="product-img">
+          <div class="emoji" style="padding:20px;background:#f5eeff;">🛋️</div>
+          <span class="badge badge-sale">-20%</span>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="cart-btn" onclick="addToCart(this)">أضف للسلة</button>
+            <button class="action-btn"><i class="fas fa-exchange-alt"></i></button>
+            <button class="action-btn" onclick="location.href='product.html'"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">زيدان - أطقم</div>
+          <a href="product.html" class="product-name">طقم ميلانو كلاسيك 7 قطع</a>
+          <div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#aaa;">(29)</span></div>
+          <div class="product-price"><span class="price-now">1,900</span><span class="egp">ج.م</span><span class="price-old">2,380 ج.م</span></div>
+        </div>
+      </div>
+
+      <!-- Product 7 -->
+      <div class="product-card">
+        <div class="product-img">
+          <div class="emoji" style="padding:20px;background:#e8fcf0;">🛏️</div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="cart-btn" onclick="addToCart(this)">أضف للسلة</button>
+            <button class="action-btn"><i class="fas fa-exchange-alt"></i></button>
+            <button class="action-btn" onclick="location.href='product.html'"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">German Silver</div>
+          <a href="product.html" class="product-name">مرتبة جيرمان سيلفر الفاخرة</a>
+          <div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#aaa;">(55)</span></div>
+          <div class="product-price"><span class="price-now">8,900</span><span class="egp">ج.م</span></div>
+        </div>
+      </div>
+
+      <!-- Product 8 -->
+      <div class="product-card">
+        <div class="product-img">
+          <div class="emoji" style="padding:20px;background:#fff0e8;">😴</div>
+          <span class="badge badge-new">جديد</span>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="cart-btn" onclick="addToCart(this)">أضف للسلة</button>
+            <button class="action-btn"><i class="fas fa-exchange-alt"></i></button>
+            <button class="action-btn" onclick="location.href='product.html'"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">زيدان ستورز</div>
+          <a href="product.html" class="product-name">لازي بوي 1 Motion Special</a>
+          <div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#aaa;">(22)</span></div>
+          <div class="product-price"><span class="price-now">7,800</span><span class="egp">ج.م</span></div>
+        </div>
+      </div>
+
+      <!-- Product 9 -->
+      <div class="product-card">
+        <div class="product-img">
+          <div class="emoji" style="padding:20px;background:#fcf0ff;">🌙</div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="cart-btn" onclick="addToCart(this)">أضف للسلة</button>
+            <button class="action-btn"><i class="fas fa-exchange-alt"></i></button>
+            <button class="action-btn" onclick="location.href='product.html'"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">زيدان - مفروشات</div>
+          <a href="product.html" class="product-name">لحاف زيدان فايبر 200×240 سم</a>
+          <div><span class="stars">★★★★☆</span> <span style="font-size:11px;color:#aaa;">(8)</span></div>
+          <div class="product-price"><span class="price-now">349</span><span class="egp">ج.م</span><span class="price-old">429 ج.م</span></div>
+        </div>
+      </div>
+
+      <!-- Product 10 -->
+      <div class="product-card">
+        <div class="product-img">
+          <div class="emoji" style="padding:20px;background:#f0f8ff;">🛑</div>
+          <span class="badge badge-sale">-10%</span>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="cart-btn" onclick="addToCart(this)">أضف للسلة</button>
+            <button class="action-btn"><i class="fas fa-exchange-alt"></i></button>
+            <button class="action-btn" onclick="location.href='product.html'"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">زيدان ستورز</div>
+          <a href="product.html" class="product-name">بن باج جلد صناعي مقاس XL</a>
+          <div><span class="stars">★★★★☆</span> <span style="font-size:11px;color:#aaa;">(15)</span></div>
+          <div class="product-price"><span class="price-now">599</span><span class="egp">ج.م</span><span class="price-old">665 ج.م</span></div>
+        </div>
+      </div>
+
+      <!-- Product 11 -->
+      <div class="product-card">
+        <div class="product-img">
+          <div class="emoji" style="padding:20px;background:#f8f4ee;">🛏️</div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="cart-btn" onclick="addToCart(this)">أضف للسلة</button>
+            <button class="action-btn"><i class="fas fa-exchange-alt"></i></button>
+            <button class="action-btn" onclick="location.href='product.html'"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">زيدان - مراتب</div>
+          <a href="product.html" class="product-name">مرتبة Regency مزدوجة الوجه</a>
+          <div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#aaa;">(37)</span></div>
+          <div class="product-price"><span class="price-now">6,200</span><span class="egp">ج.م</span></div>
+        </div>
+      </div>
+
+      <!-- Product 12 -->
+      <div class="product-card">
+        <div class="product-img">
+          <div class="emoji" style="padding:20px;background:#efffef;">🪑</div>
+          <span class="badge badge-new">جديد</span>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="cart-btn" onclick="addToCart(this)">أضف للسلة</button>
+            <button class="action-btn"><i class="fas fa-exchange-alt"></i></button>
+            <button class="action-btn" onclick="location.href='product.html'"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">زيدان - أطقم</div>
+          <a href="product.html" class="product-name">طقم ڤيولا كنبة مودرن 3+2+1</a>
+          <div><span class="stars">★★★★★</span> <span style="font-size:11px;color:#aaa;">(19)</span></div>
+          <div class="product-price"><span class="price-now">3,200</span><span class="egp">ج.م</span></div>
+        </div>
+      </div>
+
+    </div><!-- /products-grid -->
+
+    <!-- PAGINATION -->
+    <div class="pagination">
+      <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">4</button>
+      <button class="page-btn">5</button>
+      <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+    </div>
+  </main>
+
+</div><!-- /shop-layout -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-bottom">
+    <div class="footer-logo">زيدان<span>ستورز</span></div>
+    <p>جميع الحقوق محفوظة © 2024 زيدان ستورز</p>
+    <div class="payment-icons">
+      <span class="payment-icon">VISA</span>
+      <span class="payment-icon">MasterCard</span>
+      <span class="payment-icon">Paymob</span>
+      <span class="payment-icon">فودافون كاش</span>
+      <span class="payment-icon">كيوسك</span>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/201000000000" class="whatsapp-float"><i class="fab fa-whatsapp"></i></a>
+
+<script>
+  function addToCart(btn) {
+    const o = btn.textContent;
+    btn.textContent = '✓ تمت الإضافة';
+    btn.style.background = '#27ae60';
+    setTimeout(() => { btn.textContent = o; btn.style.background = ''; }, 1500);
+  }
+
+  function setView(v) {
+    const c = document.getElementById('productsContainer');
+    const btns = document.querySelectorAll('.view-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    if (v === 'list') {
+      c.classList.remove('products-grid');
+      c.classList.add('products-list');
+      btns[1].classList.add('active');
+    } else {
+      c.classList.remove('products-list');
+      c.classList.add('products-grid');
+      btns[0].classList.add('active');
+    }
+  }
+
+  document.querySelectorAll('.color-swatch').forEach(s => {
+    s.addEventListener('click', function() {
+      document.querySelectorAll('.color-swatch').forEach(x => x.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.size-btn').forEach(s => {
+    s.addEventListener('click', function() {
+      document.querySelectorAll('.size-btn').forEach(x => x.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.page-btn').forEach(b => {
+    b.addEventListener('click', function() {
+      document.querySelectorAll('.page-btn').forEach(x => x.classList.remove('active'));
+      if (!this.querySelector('i')) this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
