@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>كنبة نيو كلاسيك | زيدان ستورز</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Cairo', sans-serif; background: #f5f5f5; color: #333; direction: rtl; }
+    a { text-decoration: none; color: inherit; }
+
+    /* TOPBAR + HEADER + NAV (shared) */
+    .top-bar { background:#1a1a1a; color:#ccc; font-size:13px; padding:7px 0; }
+    .top-bar .container { max-width:1280px; margin:0 auto; padding:0 20px; display:flex; justify-content:space-between; }
+    .top-bar a { color:#ccc; } .top-bar a:hover { color:#c8973a; }
+    .top-bar-right { display:flex; gap:20px; }
+    header { background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.08); position:sticky; top:0; z-index:1000; }
+    .header-inner { max-width:1280px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; gap:25px; }
+    .logo h1 { font-size:26px; font-weight:900; color:#1a1a1a; } .logo span { color:#c8973a; }
+    .search-bar { flex:1; }
+    .search-bar form { display:flex; border:2px solid #e0e0e0; border-radius:4px; overflow:hidden; }
+    .search-bar input { flex:1; padding:10px 15px; font-family:'Cairo',sans-serif; font-size:14px; border:none; outline:none; }
+    .search-bar button { background:#c8973a; color:#fff; border:none; padding:10px 20px; cursor:pointer; }
+    .header-actions { display:flex; gap:18px; align-items:center; }
+    .header-action { text-align:center; cursor:pointer; position:relative; }
+    .header-action i { font-size:20px; color:#333; display:block; }
+    .header-action span { font-size:11px; color:#777; }
+    .cart-badge { position:absolute; top:-5px; right:-8px; background:#c8973a; color:#fff; width:17px; height:17px; border-radius:50%; font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+    nav { background:#1a1a1a; }
+    .nav-inner { max-width:1280px; margin:0 auto; padding:0 20px; display:flex; }
+    nav ul { list-style:none; display:flex; }
+    nav ul li a { display:block; padding:13px 16px; color:#fff; font-size:13px; font-weight:600; transition:background 0.2s; }
+    nav ul li a:hover { background:#c8973a; }
+    .breadcrumb { background:#fff; border-bottom:1px solid #eee; padding:12px 0; }
+    .breadcrumb .binner { max-width:1280px; margin:0 auto; padding:0 20px; font-size:13px; color:#888; }
+    .breadcrumb a { color:#888; } .breadcrumb a:hover { color:#c8973a; }
+
+    /* PRODUCT LAYOUT */
+    .product-page { max-width:1280px; margin:30px auto; padding:0 20px; }
+    .product-main { display:grid; grid-template-columns:1fr 1fr; gap:40px; background:#fff; border-radius:10px; padding:35px; border:1px solid #eee; }
+
+    /* GALLERY */
+    .gallery { display:flex; flex-direction:column; gap:15px; }
+    .main-image {
+      background:#f8f8f8; border-radius:8px; overflow:hidden;
+      position:relative; aspect-ratio:1;
+      display:flex; align-items:center; justify-content:center;
+      border:1px solid #eee; font-size:160px;
+    }
+    .badge-sale-big {
+      position:absolute; top:15px; right:15px; background:#e74c3c; color:#fff;
+      padding:5px 14px; border-radius:4px; font-size:14px; font-weight:700;
+    }
+    .zoom-hint { position:absolute; bottom:10px; right:10px; background:rgba(0,0,0,0.5); color:#fff; padding:5px 10px; border-radius:4px; font-size:11px; }
+    .thumbnails { display:flex; gap:10px; }
+    .thumb {
+      width: 80px; height:80px; background:#f5f5f5; border:2px solid #eee;
+      border-radius:6px; display:flex; align-items:center; justify-content:center;
+      font-size:32px; cursor:pointer; transition:0.2s; flex-shrink:0;
+    }
+    .thumb.active, .thumb:hover { border-color:#c8973a; }
+    .gallery-actions { display:flex; gap:10px; flex-wrap:wrap; }
+    .gal-action-btn {
+      flex:1; padding:9px; border:1px solid #eee; border-radius:6px;
+      background:#fff; cursor:pointer; font-family:'Cairo',sans-serif;
+      font-size:13px; color:#666; display:flex; align-items:center; justify-content:center; gap:6px;
+      transition:0.2s;
+    }
+    .gal-action-btn:hover { border-color:#c8973a; color:#c8973a; }
+
+    /* PRODUCT INFO */
+    .product-info {}
+    .product-cats { font-size:12px; color:#aaa; margin-bottom:8px; }
+    .product-cats a { color:#c8973a; }
+    .product-title { font-size:26px; font-weight:900; color:#1a1a1a; line-height:1.3; margin-bottom:12px; }
+    .product-rating-row { display:flex; align-items:center; gap:12px; margin-bottom:15px; padding-bottom:15px; border-bottom:1px solid #f0f0f0; }
+    .rating-stars { color:#f5a623; font-size:18px; letter-spacing:2px; }
+    .rating-text { font-size:13px; color:#888; }
+    .rating-text a { color:#c8973a; }
+
+    /* PRICE BOX */
+    .price-box { background:#fff8ee; border:1px solid #ffe099; border-radius:8px; padding:18px; margin-bottom:20px; }
+    .price-main { display:flex; align-items:baseline; gap:10px; margin-bottom:5px; }
+    .price-now { font-size:36px; font-weight:900; color:#c8973a; }
+    .price-label { font-size:15px; color:#888; }
+    .price-old-row { font-size:14px; color:#aaa; }
+    .price-old-row s { margin-left:5px; }
+    .saving-badge { background:#e74c3c; color:#fff; padding:2px 8px; border-radius:3px; font-size:12px; font-weight:700; }
+    .stock-status { display:flex; align-items:center; gap:6px; margin-top:10px; font-size:13px; font-weight:600; color:#27ae60; }
+    .stock-dot { width:8px; height:8px; border-radius:50%; background:#27ae60; }
+
+    /* VARIATIONS */
+    .variation-section { margin-bottom:18px; }
+    .var-label { font-size:14px; font-weight:700; color:#1a1a1a; margin-bottom:10px; }
+    .var-label span { color:#888; font-weight:400; font-size:13px; }
+
+    /* Color swatches */
+    .color-swatches { display:flex; gap:8px; flex-wrap:wrap; }
+    .color-swatch {
+      width:34px; height:34px; border-radius:50%; cursor:pointer;
+      border:3px solid transparent; transition:0.2s;
+      position:relative;
+    }
+    .color-swatch.active::after {
+      content:'✓'; position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-size:14px; font-weight:700;
+      text-shadow:0 1px 3px rgba(0,0,0,0.5);
+    }
+    .color-swatch.active { border-color:#c8973a; transform:scale(1.15); }
+    .color-swatch:hover { transform:scale(1.1); }
+
+    /* Size buttons */
+    .size-btns { display:flex; gap:8px; flex-wrap:wrap; }
+    .size-btn {
+      padding:8px 16px; border:1.5px solid #ddd; border-radius:5px;
+      font-family:'Cairo',sans-serif; font-size:13px; font-weight:600;
+      cursor:pointer; background:#fff; color:#555; transition:0.2s;
+    }
+    .size-btn.active { background:#1a1a1a; color:#fff; border-color:#1a1a1a; }
+    .size-btn:hover:not(.active) { border-color:#c8973a; color:#c8973a; }
+    .size-btn.disabled { opacity:0.4; cursor:not-allowed; text-decoration:line-through; }
+
+    /* QTY + CART */
+    .add-to-cart-row { display:flex; gap:12px; align-items:center; margin-top:20px; }
+    .qty-box { display:flex; align-items:center; border:1.5px solid #ddd; border-radius:6px; overflow:hidden; background:#fff; }
+    .qty-btn { width:38px; height:48px; background:#f5f5f5; border:none; cursor:pointer; font-size:16px; font-weight:700; color:#333; transition:0.2s; }
+    .qty-btn:hover { background:#c8973a; color:#fff; }
+    .qty-input { width:55px; height:48px; text-align:center; border:none; outline:none; font-family:'Cairo',sans-serif; font-size:16px; font-weight:700; }
+    .btn-cart {
+      flex:1; background:#c8973a; color:#fff; border:none; border-radius:6px;
+      padding:14px 25px; font-family:'Cairo',sans-serif; font-size:15px; font-weight:700;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      gap:8px; transition:0.2s;
+    }
+    .btn-cart:hover { background:#b8862a; }
+    .btn-buyNow {
+      flex:1; background:#1a1a1a; color:#fff; border:none; border-radius:6px;
+      padding:14px 25px; font-family:'Cairo',sans-serif; font-size:15px; font-weight:700;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      gap:8px; transition:0.2s;
+    }
+    .btn-buyNow:hover { background:#333; }
+    .secondary-actions { display:flex; gap:12px; margin-top:12px; }
+    .sec-btn { flex:1; padding:10px; border:1.5px solid #e0e0e0; border-radius:6px; background:#fff; cursor:pointer; font-family:'Cairo',sans-serif; font-size:13px; color:#555; display:flex; align-items:center; justify-content:center; gap:6px; transition:0.2s; }
+    .sec-btn:hover { border-color:#c8973a; color:#c8973a; }
+
+
+
+    /* META */
+    .product-meta { margin-top:20px; padding-top:18px; border-top:1px solid #f0f0f0; }
+    .meta-row { display:flex; gap:8px; font-size:13px; margin-bottom:6px; }
+    .meta-label { color:#aaa; min-width:90px; }
+    .meta-value { color:#333; font-weight:600; }
+    .meta-value a { color:#c8973a; }
+    .share-row { display:flex; gap:8px; align-items:center; margin-top:10px; }
+    .share-icon { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; color:#fff; cursor:pointer; }
+
+    /* TABS */
+    .product-tabs-section { background:#fff; border-radius:10px; padding:30px; border:1px solid #eee; margin-top:25px; }
+    .tabs-nav { display:flex; border-bottom:2px solid #f0f0f0; margin-bottom:25px; gap:5px; }
+    .tab-btn { padding:12px 22px; background:none; border:none; font-family:'Cairo',sans-serif; font-size:14px; font-weight:600; cursor:pointer; color:#888; border-bottom:3px solid transparent; margin-bottom:-2px; transition:0.2s; }
+    .tab-btn.active { color:#c8973a; border-bottom-color:#c8973a; }
+    .tab-content { display:none; }
+    .tab-content.active { display:block; }
+
+    /* Description */
+    .desc-grid { display:grid; grid-template-columns:1fr 1fr; gap:30px; }
+    .desc-text h3 { font-size:18px; font-weight:700; color:#1a1a1a; margin-bottom:15px; }
+    .desc-text p { font-size:14px; color:#666; line-height:1.9; margin-bottom:12px; }
+    .specs-table { width:100%; border-collapse:collapse; }
+    .specs-table tr:nth-child(even) { background:#fafafa; }
+    .specs-table td { padding:10px 14px; font-size:13px; border-bottom:1px solid #f0f0f0; }
+    .specs-table td:first-child { color:#888; font-weight:600; width:40%; }
+    .specs-table td:last-child { color:#333; }
+
+    /* Reviews */
+    .reviews-summary { display:grid; grid-template-columns:auto 1fr; gap:30px; margin-bottom:30px; padding-bottom:25px; border-bottom:1px solid #f0f0f0; }
+    .rating-big { text-align:center; background:#f9f4ec; border-radius:10px; padding:25px 40px; }
+    .rating-number { font-size:60px; font-weight:900; color:#c8973a; line-height:1; }
+    .rating-stars-big { font-size:24px; color:#f5a623; letter-spacing:3px; }
+    .rating-count { font-size:13px; color:#aaa; margin-top:5px; }
+    .rating-bars { flex:1; }
+    .bar-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+    .bar-label { width:25px; font-size:13px; font-weight:600; text-align:left; }
+    .bar-track { flex:1; background:#f0f0f0; border-radius:3px; height:8px; overflow:hidden; }
+    .bar-fill { height:100%; background:#c8973a; border-radius:3px; }
+    .bar-count { width:30px; font-size:12px; color:#aaa; text-align:left; }
+    .review-card { border-bottom:1px solid #f5f5f5; padding:20px 0; }
+    .review-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+    .reviewer-info { display:flex; gap:12px; align-items:center; }
+    .reviewer-avatar { width:42px; height:42px; border-radius:50%; background:#c8973a; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:16px; }
+    .reviewer-name { font-size:14px; font-weight:700; }
+    .reviewer-date { font-size:12px; color:#aaa; }
+    .review-text { font-size:14px; color:#555; line-height:1.8; }
+    .verified-badge { background:#e8f8e8; color:#27ae60; padding:3px 10px; border-radius:12px; font-size:11px; font-weight:600; }
+    .write-review-btn { background:#1a1a1a; color:#fff; border:none; border-radius:6px; padding:11px 25px; font-family:'Cairo',sans-serif; font-size:14px; font-weight:600; cursor:pointer; margin-top:20px; }
+    .write-review-btn:hover { background:#c8973a; }
+
+    /* RELATED */
+    .related-section { margin-top:25px; background:#fff; border-radius:10px; padding:30px; border:1px solid #eee; }
+    .section-title-sm { font-size:22px; font-weight:900; color:#1a1a1a; padding-bottom:12px; border-bottom:2px solid #f0f0f0; margin-bottom:25px; position:relative; }
+    .section-title-sm::after { content:''; position:absolute; bottom:-2px; right:0; width:50px; height:2px; background:#c8973a; }
+    .related-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+    .rel-card { background:#f9f9f9; border-radius:8px; overflow:hidden; border:1px solid #eee; transition:box-shadow 0.2s; }
+    .rel-card:hover { box-shadow:0 5px 15px rgba(0,0,0,0.08); }
+    .rel-img { aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:60px; background:#f0f0f0; }
+    .rel-info { padding:12px; }
+    .rel-name { font-size:13px; font-weight:700; color:#333; margin-bottom:5px; }
+    .rel-price { font-size:15px; font-weight:900; color:#c8973a; }
+
+    /* FOOTER */
+    footer { background:#1a1a1a; color:#888; padding:25px 0; margin-top:25px; }
+    .footer-bottom { max-width:1280px; margin:0 auto; padding:0 20px; text-align:center; font-size:13px; }
+    .footer-logo-f { font-size:22px; font-weight:900; color:#fff; margin-bottom:8px; }
+    .footer-logo-f span { color:#c8973a; }
+    .payment-icons { display:flex; gap:8px; justify-content:center; margin-top:10px; flex-wrap:wrap; }
+    .payment-icon { background:#2a2a2a; border-radius:4px; padding:4px 10px; font-size:11px; color:#ccc; }
+
+    /* WHATSAPP */
+    .whatsapp-float { position:fixed; bottom:30px; left:25px; background:#25d366; color:#fff; width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 4px 15px rgba(37,211,102,0.4); z-index:999; }
+
+    /* STICKY ADD TO CART BAR */
+    .sticky-cart { position:fixed; bottom:0; left:0; right:0; background:#fff; border-top:1px solid #eee; padding:12px 20px; display:none; align-items:center; justify-content:center; gap:20px; z-index:900; box-shadow:0 -3px 15px rgba(0,0,0,0.1); }
+    .sticky-cart.show { display:flex; }
+    .sticky-product-name { font-size:14px; font-weight:700; }
+    .sticky-price { font-size:20px; font-weight:900; color:#c8973a; }
+    .sticky-btn { background:#c8973a; color:#fff; border:none; border-radius:6px; padding:12px 30px; font-family:'Cairo',sans-serif; font-size:15px; font-weight:700; cursor:pointer; }
+
+    @media (max-width:900px) {
+      .product-main { grid-template-columns:1fr; }
+      .desc-grid { grid-template-columns:1fr; }
+      .related-grid { grid-template-columns:repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="container">
+    <div><i class="fas fa-phone-alt" style="color:#c8973a;margin-left:5px;"></i> 01000000000</div>
+    <div class="top-bar-right">
+      <a href="#">تتبع طلبك</a>
+      <a href="#">مساعدة</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo"><a href="index.html"><h1>زيدان<span>ستورز</span></h1></a></div>
+    <div class="search-bar">
+      <form><input type="text" placeholder="ابحث عن منتج..."><button><i class="fas fa-search"></i></button></form>
+    </div>
+    <div class="header-actions">
+      <div class="header-action"><i class="fas fa-user-circle"></i><span>حسابي</span></div>
+      <div class="header-action"><i class="far fa-heart"></i><span>المفضلة</span></div>
+      <div class="header-action">
+        <i class="fas fa-shopping-cart"></i><span>السلة</span>
+        <span class="cart-badge" id="cartCount">3</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <ul>
+      <li><a href="index.html">الرئيسية</a></li>
+      <li><a href="shop.html">كنب وانتريهات</a></li>
+      <li><a href="shop.html">ركنات</a></li>
+      <li><a href="shop.html">مراتب</a></li>
+      <li><a href="shop.html">لازي بوي</a></li>
+      <li><a href="shop.html">مفروشات</a></li>
+      <li><a href="shop.html" style="color:#e2b76b;">العروض</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="binner">
+    <a href="index.html">الرئيسية</a> ›
+    <a href="shop.html">كنب وانتريهات</a> ›
+    <strong style="color:#333;">كنبة نيو كلاسيك جرار مقاس 280سم</strong>
+  </div>
+</div>
+
+<!-- PRODUCT PAGE -->
+<div class="product-page">
+
+  <!-- MAIN -->
+  <div class="product-main">
+
+    <!-- GALLERY -->
+    <div class="gallery">
+      <div class="main-image" id="mainImg">
+        <span id="mainEmoji">🛋️</span>
+        <span class="badge-sale-big">-17%</span>
+        <span class="zoom-hint"><i class="fas fa-search-plus"></i> تكبير</span>
+      </div>
+      <div class="thumbnails">
+        <div class="thumb active" onclick="changeImg('🛋️', this)">🛋️</div>
+        <div class="thumb" onclick="changeImg('🪑', this)">🪑</div>
+        <div class="thumb" onclick="changeImg('🛑', this)">🛑</div>
+        <div class="thumb" onclick="changeImg('🏠', this)">🏠</div>
+        <div class="thumb" onclick="changeImg('📐', this)">📐</div>
+      </div>
+      <div class="gallery-actions">
+        <button class="gal-action-btn"><i class="fab fa-youtube" style="color:red;"></i> فيديو المنتج</button>
+        <button class="gal-action-btn"><i class="fas fa-expand" style="color:#666;"></i> عرض كبير</button>
+        <button class="gal-action-btn"><i class="far fa-images" style="color:#666;"></i> جميع الصور</button>
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="product-info">
+      <div class="product-cats">
+        <a href="shop.html">كنب وانتريهات</a> /
+        <a href="shop.html">كنب نيو كلاسيك</a>
+      </div>
+      <h1 class="product-title">كنبة نيو كلاسيك جرار مقاس 280سم</h1>
+      <div class="product-rating-row">
+        <span class="rating-stars">★★★★★</span>
+        <span class="rating-text">
+          <strong>4.9</strong> / 5 &nbsp;
+          (<a href="#reviews">24 تقييم</a>)
+        </span>
+        <span style="font-size:12px;color:#27ae60;font-weight:600;"><i class="fas fa-check-circle"></i> 150+ طلب</span>
+      </div>
+
+      <!-- PRICE BOX -->
+      <div class="price-box">
+        <div class="price-main">
+          <span class="price-now" id="currentPrice">5,950</span>
+          <span class="price-label">ج.م</span>
+        </div>
+        <div class="price-old-row">
+          السعر الأصلي: <s>7,200 ج.م</s>
+          &nbsp; <span class="saving-badge">وفّر 1,250 ج.م</span>
+        </div>
+        <div class="stock-status">
+          <div class="stock-dot"></div>
+          متوفر في المخزون (12 قطعة)
+        </div>
+      </div>
+
+      <!-- COLOR VARIATION -->
+      <div class="variation-section">
+        <div class="var-label">اللون: <span id="selectedColor">بني داكن</span></div>
+        <div class="color-swatches">
+          <div class="color-swatch active" style="background:#5c3a1e;" title="بني داكن" onclick="selectColor(this,'بني داكن')"></div>
+          <div class="color-swatch" style="background:#1a1a1a;" title="أسود" onclick="selectColor(this,'أسود')"></div>
+          <div class="color-swatch" style="background:#c8a882;" title="بيج فاتح" onclick="selectColor(this,'بيج فاتح')"></div>
+          <div class="color-swatch" style="background:#708090;" title="رمادي" onclick="selectColor(this,'رمادي')"></div>
+          <div class="color-swatch" style="background:#8B0000;" title="بردو" onclick="selectColor(this,'بردو')"></div>
+          <div class="color-swatch" style="background:#1a3c6a;" title="كحلي" onclick="selectColor(this,'كحلي')"></div>
+        </div>
+      </div>
+
+      <!-- SIZE VARIATION -->
+      <div class="variation-section">
+        <div class="var-label">المقاس: <span id="selectedSize">280سم</span></div>
+        <div class="size-btns">
+          <button class="size-btn" onclick="selectSize(this,'240سم','4,800')">240سم</button>
+          <button class="size-btn" onclick="selectSize(this,'260سم','5,400')">260سم</button>
+          <button class="size-btn active" onclick="selectSize(this,'280سم','5,950')">280سم</button>
+          <button class="size-btn" onclick="selectSize(this,'300سم','6,500')">300سم</button>
+          <button class="size-btn" onclick="selectSize(this,'320سم','7,200')">320سم</button>
+        </div>
+      </div>
+
+      <!-- QTY + CART -->
+      <div class="add-to-cart-row">
+        <div class="qty-box">
+          <button class="qty-btn" onclick="changeQty(-1)">−</button>
+          <input class="qty-input" type="number" value="1" min="1" id="qtyInput">
+          <button class="qty-btn" onclick="changeQty(1)">+</button>
+        </div>
+        <button class="btn-cart" onclick="addToCart()">
+          <i class="fas fa-shopping-cart"></i> أضف للسلة
+        </button>
+      </div>
+      <div class="secondary-actions">
+        <button class="btn-buyNow"><i class="fas fa-bolt"></i> اشتري الآن</button>
+        <button class="sec-btn"><i class="far fa-heart"></i> المفضلة</button>
+        <button class="sec-btn"><i class="fas fa-exchange-alt"></i> مقارنة</button>
+      </div>
+
+
+
+      <!-- META -->
+      <div class="product-meta">
+        <div class="meta-row"><span class="meta-label">الكود:</span><span class="meta-value">ZS-SOFA-NK280</span></div>
+        <div class="meta-row"><span class="meta-label">التصنيف:</span><span class="meta-value"><a href="shop.html">كنب وانتريهات</a></span></div>
+        <div class="meta-row"><span class="meta-label">الماركة:</span><span class="meta-value"><a href="#">زيدان ستورز</a></span></div>
+        <div class="meta-row"><span class="meta-label">التوصيل:</span><span class="meta-value">3-7 أيام عمل لجميع المحافظات</span></div>
+        <div class="share-row">
+          <span style="font-size:13px;color:#aaa;">مشاركة:</span>
+          <div class="share-icon" style="background:#3b5998;"><i class="fab fa-facebook-f"></i></div>
+          <div class="share-icon" style="background:#e1306c;"><i class="fab fa-instagram"></i></div>
+          <div class="share-icon" style="background:#25d366;"><i class="fab fa-whatsapp"></i></div>
+          <div class="share-icon" style="background:#0077b5;"><i class="fab fa-linkedin-in"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES ICONS -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-top:20px;">
+    <div style="background:#fff;border:1px solid #eee;border-radius:8px;padding:18px;text-align:center;font-size:13px;color:#555;">
+      <div style="font-size:28px;margin-bottom:8px;">🚚</div>
+      <strong style="display:block;color:#1a1a1a;">توصيل سريع</strong>
+      3–7 أيام عمل
+    </div>
+    <div style="background:#fff;border:1px solid #eee;border-radius:8px;padding:18px;text-align:center;font-size:13px;color:#555;">
+      <div style="font-size:28px;margin-bottom:8px;">🔒</div>
+      <strong style="display:block;color:#1a1a1a;">ضمان سنة</strong>
+      ضمان على عيوب الصنعة
+    </div>
+    <div style="background:#fff;border:1px solid #eee;border-radius:8px;padding:18px;text-align:center;font-size:13px;color:#555;">
+      <div style="font-size:28px;margin-bottom:8px;">↩️</div>
+      <strong style="display:block;color:#1a1a1a;">استرجاع 14 يوم</strong>
+      في حالة وجود عيب
+    </div>
+    <div style="background:#fff;border:1px solid #eee;border-radius:8px;padding:18px;text-align:center;font-size:13px;color:#555;">
+      <div style="font-size:28px;margin-bottom:8px;">💳</div>
+      <strong style="display:block;color:#1a1a1a;">دفع آمن</strong>
+      Paymob + 10 طرق
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="product-tabs-section">
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('desc', this)">وصف المنتج</button>
+      <button class="tab-btn" onclick="switchTab('specs', this)">المواصفات الفنية</button>
+      <button class="tab-btn" onclick="switchTab('reviews', this)">التقييمات (24)</button>
+      <button class="tab-btn" onclick="switchTab('shipping', this)">الشحن والإرجاع</button>
+    </div>
+
+    <!-- Description -->
+    <div class="tab-content active" id="tab-desc">
+      <div class="desc-grid">
+        <div class="desc-text">
+          <h3>وصف الكنبة</h3>
+          <p><strong>كنبة سرير جرار نيو كلاسيك مقاس 280سم</strong> — من إنتاج زيدان ستورز، واحدة من أكثر الكنب مبيعاً لجمعها بين أناقة الكلاسيك وعملية الاستخدام اليومي.</p>
+          <p>تتميز هذه الكنبة بإمكانية تحويلها لسرير مريح عبر آلية الجرار السلسة، مما يجعلها الخيار الأمثل لغرف المعيشة والأوض الضيوف.</p>
+          <h3 style="margin-top:18px;">المميزات</h3>
+          <ul style="list-style:none;padding:0;">
+            <li style="padding:6px 0;border-bottom:1px solid #f5f5f5;font-size:14px;color:#555;display:flex;gap:8px;align-items:center;">
+              <i class="fas fa-check-circle" style="color:#27ae60;"></i> إطار خشب زان طبيعي عالي الكثافة
+            </li>
+            <li style="padding:6px 0;border-bottom:1px solid #f5f5f5;font-size:14px;color:#555;display:flex;gap:8px;align-items:center;">
+              <i class="fas fa-check-circle" style="color:#27ae60;"></i> حشوة إسفنج مزدوج الكثافة 35kg/m³
+            </li>
+            <li style="padding:6px 0;border-bottom:1px solid #f5f5f5;font-size:14px;color:#555;display:flex;gap:8px;align-items:center;">
+              <i class="fas fa-check-circle" style="color:#27ae60;"></i> تشكيلة ألوان متنوعة أكثر من 15 لون
+            </li>
+            <li style="padding:6px 0;border-bottom:1px solid #f5f5f5;font-size:14px;color:#555;display:flex;gap:8px;align-items:center;">
+              <i class="fas fa-check-circle" style="color:#27ae60;"></i> آلية جرار سهلة وصامتة
+            </li>
+            <li style="padding:6px 0;border-bottom:1px solid #f5f5f5;font-size:14px;color:#555;display:flex;gap:8px;align-items:center;">
+              <i class="fas fa-check-circle" style="color:#27ae60;"></i> قماش فيلفت مقاوم للغبار
+            </li>
+            <li style="padding:6px 0;font-size:14px;color:#555;display:flex;gap:8px;align-items:center;">
+              <i class="fas fa-check-circle" style="color:#27ae60;"></i> متوفر بمقاسات متعددة 240 - 320 سم
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3>المقاسات المتاحة</h3>
+          <div style="overflow-x:auto;">
+            <table class="specs-table" style="margin-top:10px;">
+              <tr><td>مقاس 240سم</td><td>240 × 95 × 90 سم</td></tr>
+              <tr><td>مقاس 260سم</td><td>260 × 95 × 90 سم</td></tr>
+              <tr><td>مقاس 280سم</td><td>280 × 95 × 90 سم</td></tr>
+              <tr><td>مقاس 300سم</td><td>300 × 100 × 90 سم</td></tr>
+              <tr><td>مقاس 320سم</td><td>320 × 100 × 90 سم</td></tr>
+            </table>
+          </div>
+          <div style="background:#fff8ee;border:1px solid #f0d8a0;border-radius:8px;padding:15px;margin-top:20px;">
+            <strong style="display:block;color:#c8973a;margin-bottom:8px;"><i class="fas fa-info-circle"></i> ملاحظة مهمة</strong>
+            <p style="font-size:13px;color:#666;line-height:1.7;">الألوان قد تختلف قليلاً عن الصور بسبب إعدادات الشاشة. ننصح بزيارة أحد معارضنا لمشاهدة الألوان الحقيقية.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Specs -->
+    <div class="tab-content" id="tab-specs">
+      <table class="specs-table">
+        <tr><td>الماركة</td><td>زيدان ستورز</td></tr>
+        <tr><td>المقاس المحدد</td><td>280 × 95 × 90 سم</td></tr>
+        <tr><td>الوزن</td><td>65 كيلوجرام</td></tr>
+        <tr><td>الخامة الخارجية</td><td>فيلفت مصري عالي الجودة</td></tr>
+        <tr><td>الإطار</td><td>خشب زان طبيعي مستورد</td></tr>
+        <tr><td>الحشوة</td><td>إسفنج مزدوج 35kg/m³</td></tr>
+        <tr><td>نوع الأرجل</td><td>خشب أو معدن (حسب اللون)</td></tr>
+        <tr><td>آلية الجرار</td><td>سهلة الاستخدام - لا صوت</td></tr>
+        <tr><td>مقاس السرير عند الفتح</td><td>280 × 160 سم</td></tr>
+        <tr><td>الألوان المتاحة</td><td>أسود، بني، بيج، رمادي، بردو، كحلي، + 9 ألوان أخرى</td></tr>
+        <tr><td>ضمان</td><td>سنة على عيوب الصنعة</td></tr>
+        <tr><td>بلد المنشأ</td><td>جمهورية مصر العربية</td></tr>
+      </table>
+    </div>
+
+    <!-- Reviews -->
+    <div class="tab-content" id="tab-reviews">
+      <div class="reviews-summary">
+        <div class="rating-big">
+          <div class="rating-number">4.9</div>
+          <div class="rating-stars-big">★★★★★</div>
+          <div class="rating-count">من 24 تقييم</div>
+        </div>
+        <div class="rating-bars">
+          <div class="bar-row"><span class="bar-label">5 ★</span><div class="bar-track"><div class="bar-fill" style="width:85%"></div></div><span class="bar-count">20</span></div>
+          <div class="bar-row"><span class="bar-label">4 ★</span><div class="bar-track"><div class="bar-fill" style="width:12%"></div></div><span class="bar-count">3</span></div>
+          <div class="bar-row"><span class="bar-label">3 ★</span><div class="bar-track"><div class="bar-fill" style="width:4%"></div></div><span class="bar-count">1</span></div>
+          <div class="bar-row"><span class="bar-label">2 ★</span><div class="bar-track"><div class="bar-fill" style="width:0%"></div></div><span class="bar-count">0</span></div>
+          <div class="bar-row"><span class="bar-label">1 ★</span><div class="bar-track"><div class="bar-fill" style="width:0%"></div></div><span class="bar-count">0</span></div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="reviewer-info">
+            <div class="reviewer-avatar">أ</div>
+            <div>
+              <div class="reviewer-name">أحمد محمود</div>
+              <div class="reviewer-date">15 يناير 2024</div>
+            </div>
+          </div>
+          <div>
+            <span style="color:#f5a623;">★★★★★</span>
+            <span class="verified-badge">شراء موثق</span>
+          </div>
+        </div>
+        <p class="review-text">الكنبة جميلة جداً وجودتها عالية. الإطار متين وآلية الجرار سلسة ومريحة. التوصيل كان في الوقت المحدد والفريق كان محترف في التركيب. موصي بيها بشدة!</p>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="reviewer-info">
+            <div class="reviewer-avatar" style="background:#27ae60;">م</div>
+            <div>
+              <div class="reviewer-name">منة عبدالرحمن</div>
+              <div class="reviewer-date">3 فبراير 2024</div>
+            </div>
+          </div>
+          <div>
+            <span style="color:#f5a623;">★★★★★</span>
+            <span class="verified-badge">شراء موثق</span>
+          </div>
+        </div>
+        <p class="review-text">أخذت اللون البيج وهو تحفة. الحشوة مريحة جداً والإسفنج عالي الكثافة. الأطفال بيحبوا ينوموا عليها أكتر من السرير 😂 شكراً زيدان ستورز!</p>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="reviewer-info">
+            <div class="reviewer-avatar" style="background:#3498db;">ك</div>
+            <div>
+              <div class="reviewer-name">كريم سليمان</div>
+              <div class="reviewer-date">20 فبراير 2024</div>
+            </div>
+          </div>
+          <div>
+            <span style="color:#f5a623;">★★★★☆</span>
+            <span class="verified-badge">شراء موثق</span>
+          </div>
+        </div>
+        <p class="review-text">المنتج كويس جداً ويستاهل تمنه. بس التوصيل تأخر يومين عن الموعد. هستناهم يتواصلوا معايا لما عندهم أي منتج تاني.</p>
+      </div>
+
+      <button class="write-review-btn"><i class="fas fa-pen"></i> اكتب تقييمك</button>
+    </div>
+
+    <!-- Shipping -->
+    <div class="tab-content" id="tab-shipping">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:25px;">
+        <div>
+          <h3 style="font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:15px;">🚚 الشحن والتوصيل</h3>
+          <ul style="list-style:none;font-size:14px;color:#555;line-height:2;">
+            <li><i class="fas fa-check" style="color:#27ae60;margin-left:8px;"></i> توصيل لجميع محافظات مصر</li>
+            <li><i class="fas fa-check" style="color:#27ae60;margin-left:8px;"></i> مدة التوصيل: 3–7 أيام عمل</li>
+            <li><i class="fas fa-check" style="color:#27ae60;margin-left:8px;"></i> القاهرة وضواحيها: 2–4 أيام</li>
+            <li><i class="fas fa-check" style="color:#27ae60;margin-left:8px;"></i> الشحن المجاني للطلبات فوق 3,000 ج.م</li>
+            <li><i class="fas fa-check" style="color:#27ae60;margin-left:8px;"></i> التركيب داخل المنزل شامل</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:15px;">↩️ سياسة الاسترجاع</h3>
+          <ul style="list-style:none;font-size:14px;color:#555;line-height:2;">
+            <li><i class="fas fa-check" style="color:#27ae60;margin-left:8px;"></i> استرجاع خلال 14 يوم من الاستلام</li>
+            <li><i class="fas fa-check" style="color:#27ae60;margin-left:8px;"></i> في حالة وجود عيب مصنعي فقط</li>
+            <li><i class="fas fa-check" style="color:#27ae60;margin-left:8px;"></i> الاستبدال بنفس المنتج أو منتج آخر</li>
+            <li><i class="fas fa-times" style="color:#e74c3c;margin-left:8px;"></i> لا يقبل الاسترجاع بعد الاستخدام</li>
+            <li><i class="fas fa-check" style="color:#27ae60;margin-left:8px;"></i> استرداد كامل في خلال 7 أيام</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RELATED PRODUCTS -->
+  <div class="related-section">
+    <div class="section-title-sm">منتجات ذات صلة</div>
+    <div class="related-grid">
+      <a href="product.html" class="rel-card">
+        <div class="rel-img">🪑</div>
+        <div class="rel-info">
+          <div class="rel-name">لازي بوي 3 Motion Delmas</div>
+          <div class="rel-price">12,321 ج.م</div>
+        </div>
+      </a>
+      <a href="product.html" class="rel-card">
+        <div class="rel-img">🛑</div>
+        <div class="rel-info">
+          <div class="rel-name">ركنة زيدان ريكلاينر 320سم</div>
+          <div class="rel-price">14,000 ج.م</div>
+        </div>
+      </a>
+      <a href="product.html" class="rel-card">
+        <div class="rel-img">🛋️</div>
+        <div class="rel-info">
+          <div class="rel-name">طقم ميلانو كلاسيك 7 قطع</div>
+          <div class="rel-price">1,900 ج.م</div>
+        </div>
+      </a>
+      <a href="product.html" class="rel-card">
+        <div class="rel-img">🛏️</div>
+        <div class="rel-info">
+          <div class="rel-name">مرتبة كومفورت بيلو توب</div>
+          <div class="rel-price">4,530 ج.م</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</div><!-- /product-page -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-bottom">
+    <div class="footer-logo-f">زيدان<span>ستورز</span></div>
+    <p>جميع الحقوق محفوظة © 2024 زيدان ستورز</p>
+    <div class="payment-icons">
+      <span class="payment-icon">VISA</span>
+      <span class="payment-icon">MasterCard</span>
+      <span class="payment-icon">Paymob</span>
+      <span class="payment-icon">فودافون كاش</span>
+
+    </div>
+  </div>
+</footer>
+
+<!-- STICKY BAR -->
+<div class="sticky-cart" id="stickyCart">
+  <span class="sticky-product-name">كنبة نيو كلاسيك 280سم</span>
+  <span class="sticky-price">5,950 ج.م</span>
+  <button class="sticky-btn" onclick="addToCart()"><i class="fas fa-shopping-cart"></i> أضف للسلة</button>
+</div>
+
+<a href="https://wa.me/201000000000" class="whatsapp-float"><i class="fab fa-whatsapp"></i></a>
+
+<script>
+  // Gallery
+  function changeImg(emoji, el) {
+    document.getElementById('mainEmoji').textContent = emoji;
+    document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Tabs
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // Color
+  function selectColor(el, name) {
+    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('selectedColor').textContent = name;
+  }
+
+  // Size
+  function selectSize(el, name, price) {
+    document.querySelectorAll('.size-btn').forEach(s => s.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('selectedSize').textContent = name;
+    document.getElementById('currentPrice').textContent = price;
+  }
+
+  // Qty
+  function changeQty(delta) {
+    const input = document.getElementById('qtyInput');
+    const val = parseInt(input.value) + delta;
+    if (val >= 1) input.value = val;
+  }
+
+  // Add to cart
+  let cartCount = 3;
+  function addToCart() {
+    cartCount++;
+    document.getElementById('cartCount').textContent = cartCount;
+    const btn = document.querySelector('.btn-cart');
+    const origHtml = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i> تمت الإضافة!';
+    btn.style.background = '#27ae60';
+    setTimeout(() => {
+      btn.innerHTML = origHtml;
+      btn.style.background = '';
+    }, 2000);
+  }
+
+  // Sticky bar on scroll
+  window.addEventListener('scroll', () => {
+    const sticky = document.getElementById('stickyCart');
+    if (window.scrollY > 700) sticky.classList.add('show');
+    else sticky.classList.remove('show');
+  });
+</script>
+</body>
+</html>
