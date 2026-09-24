@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إتمام الطلب | زيدان ستورز</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Cairo',sans-serif; background:#f5f5f5; color:#333; direction:rtl; }
+    a { text-decoration:none; color:inherit; }
+
+    /* TOPBAR */
+    .top-bar { background:#1a1a1a; color:#ccc; font-size:13px; padding:7px 0; }
+    .top-bar .wrap { max-width:1280px; margin:0 auto; padding:0 20px; display:flex; justify-content:space-between; }
+    .top-bar a { color:#ccc; } .top-bar a:hover { color:#c8973a; }
+
+    /* HEADER */
+    header { background:#fff; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+    .header-inner { max-width:1280px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; justify-content:space-between; }
+    .logo h1 { font-size:26px; font-weight:900; color:#1a1a1a; } .logo span { color:#c8973a; }
+    .checkout-secure { display:flex; align-items:center; gap:8px; font-size:13px; color:#27ae60; font-weight:700; }
+
+    .breadcrumb { background:#fff; border-bottom:1px solid #eee; padding:12px 0; }
+    .breadcrumb .wrap { max-width:1280px; margin:0 auto; padding:0 20px; font-size:13px; color:#888; }
+    .breadcrumb a { color:#888; } .breadcrumb a:hover { color:#c8973a; }
+
+    /* STEPS */
+    .steps-wrap { background:#fff; border-bottom:1px solid #eee; padding:16px 0; }
+    .steps-inner { max-width:1280px; margin:0 auto; padding:0 20px; display:flex; justify-content:center; align-items:center; gap:0; }
+    .step { display:flex; align-items:center; gap:8px; }
+    .step-circle { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; }
+    .step.done .step-circle { background:#27ae60; color:#fff; }
+    .step.active .step-circle { background:#c8973a; color:#fff; }
+    .step.inactive .step-circle { background:#f0f0f0; color:#bbb; }
+    .step-label { font-size:13px; font-weight:600; }
+    .step.done .step-label { color:#27ae60; }
+    .step.active .step-label { color:#c8973a; }
+    .step.inactive .step-label { color:#ccc; }
+    .step-connector { flex:1; height:2px; min-width:40px; max-width:80px; margin:0 10px; }
+    .step-connector.done { background:#27ae60; }
+    .step-connector.inactive { background:#f0f0f0; }
+
+    /* PAGE */
+    .page-wrap { max-width:1280px; margin:30px auto; padding:0 20px; }
+    .checkout-grid { display:grid; grid-template-columns:1fr 420px; gap:25px; align-items:start; }
+
+    /* FORMS */
+    .checkout-form { display:flex; flex-direction:column; gap:20px; }
+    .form-card { background:#fff; border:1px solid #eee; border-radius:10px; overflow:hidden; }
+    .form-card-header { padding:16px 22px; border-bottom:1px solid #f0f0f0; display:flex; align-items:center; gap:10px; }
+    .form-card-header .card-icon { width:36px; height:36px; background:#fff8ee; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#c8973a; font-size:16px; }
+    .form-card-header h3 { font-size:16px; font-weight:700; color:#1a1a1a; margin:0; }
+    .form-card-header .optional { font-size:12px; color:#aaa; margin-right:auto; }
+    .form-card-body { padding:22px; }
+
+    /* FORM FIELDS */
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .form-grid.single { grid-template-columns:1fr; }
+    .form-grid.triple { grid-template-columns:1fr 1fr 1fr; }
+    .form-group { display:flex; flex-direction:column; gap:5px; }
+    .form-group.full { grid-column:1/-1; }
+    label.field-label { font-size:13px; font-weight:600; color:#555; }
+    label.field-label .required { color:#e74c3c; margin-right:2px; }
+    .form-input {
+      padding:11px 14px; border:1.5px solid #e0e0e0; border-radius:6px;
+      font-family:'Cairo',sans-serif; font-size:14px; outline:none;
+      transition:border-color .2s; background:#fff; width:100%;
+    }
+    .form-input:focus { border-color:#c8973a; box-shadow:0 0 0 3px rgba(200,151,58,.1); }
+    .form-input.error { border-color:#e74c3c; }
+    .form-select {
+      padding:11px 14px; border:1.5px solid #e0e0e0; border-radius:6px;
+      font-family:'Cairo',sans-serif; font-size:14px; outline:none;
+      background:#fff; cursor:pointer; width:100%;
+    }
+    .form-select:focus { border-color:#c8973a; }
+    .field-hint { font-size:11px; color:#aaa; }
+
+    /* LOGIN PROMPT */
+    .login-prompt { background:#f0f8ff; border:1px solid #c5e0f5; border-radius:8px; padding:14px 18px; margin-bottom:18px; font-size:13px; color:#555; display:flex; align-items:center; gap:10px; }
+    .login-prompt a { color:#c8973a; font-weight:700; }
+
+    /* PAYMENT METHODS */
+    .payment-methods { display:flex; flex-direction:column; gap:10px; }
+    .pay-method {
+      border:2px solid #eee; border-radius:8px; overflow:hidden;
+      cursor:pointer; transition:.2s;
+    }
+    .pay-method.selected { border-color:#c8973a; background:#fff8ee; }
+    .pay-method-header { padding:14px 16px; display:flex; align-items:center; gap:12px; }
+    .pay-method-header input[type=radio] { width:18px; height:18px; accent-color:#c8973a; flex-shrink:0; }
+    .pay-method-icon { width:42px; height:28px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; flex-shrink:0; }
+    .pm-visa { background:#1a1f71; color:#fff; }
+    .pm-mc { background:#eb001b; color:#fff; }
+    .pm-voda { background:#e60000; color:#fff; }
+    .pm-fawry { background:#ff6b00; color:#fff; }
+    .pm-kiosk { background:#0ea5e9; color:#fff; }
+    .pm-cod { background:#374151; color:#fff; }
+    .pay-method-name { font-size:14px; font-weight:700; flex:1; }
+    .pay-method-sub { font-size:12px; color:#aaa; font-weight:400; }
+    .pay-badge-group { display:flex; gap:5px; margin-right:auto; }
+    .mini-badge { font-size:10px; background:#f5f5f5; border:1px solid #ddd; border-radius:3px; padding:2px 6px; color:#666; }
+
+    /* Expanded panel */
+    .pay-panel { padding:16px; border-top:1px solid #f5f5f5; background:#fff; display:none; }
+    .pay-method.selected .pay-panel { display:block; }
+
+    /* Card inputs */
+    .card-input-wrap { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .card-input-wrap .full { grid-column:1/-1; }
+    .card-number { letter-spacing:3px; font-size:16px; }
+    .card-logo-row { display:flex; gap:8px; margin-top:10px; }
+    .card-logo-item { padding:4px 10px; border:1px solid #eee; border-radius:4px; font-size:11px; font-weight:700; }
+
+    /* Mobile wallet */
+    .wallet-info { background:#fef9f0; border-radius:6px; padding:12px; font-size:13px; color:#666; line-height:1.8; }
+    .wallet-info ol { padding-right:20px; margin-top:8px; }
+    .wallet-info li { margin-bottom:4px; }
+
+    /* COD */
+    .cod-info { background:#f0faf5; border:1px solid #b7e9cc; border-radius:6px; padding:12px; font-size:13px; color:#555; }
+    .cod-info i { color:#27ae60; }
+
+    /* Kiosk */
+    .kiosk-info { background:#f0f8ff; border:1px solid #c5e0f5; border-radius:6px; padding:12px; font-size:13px; color:#555; line-height:1.8; }
+
+    /* NOTES */
+    .form-textarea { width:100%; padding:11px 14px; border:1.5px solid #e0e0e0; border-radius:6px; font-family:'Cairo',sans-serif; font-size:14px; outline:none; resize:vertical; min-height:90px; }
+    .form-textarea:focus { border-color:#c8973a; }
+
+    /* RIGHT COLUMN */
+    .checkout-sidebar { position:sticky; top:20px; display:flex; flex-direction:column; gap:18px; }
+
+    /* ORDER SUMMARY */
+    .summary-card { background:#fff; border:1px solid #eee; border-radius:10px; overflow:hidden; }
+    .summary-header { background:#1a1a1a; color:#fff; padding:15px 20px; font-size:15px; font-weight:700; display:flex; align-items:center; gap:8px; justify-content:space-between; }
+    .summary-header i { color:#c8973a; }
+    .toggle-items { background:none; border:none; color:#c8973a; font-family:'Cairo',sans-serif; font-size:12px; cursor:pointer; }
+
+    .order-items { padding:16px 20px; border-bottom:1px dashed #f0f0f0; }
+    .order-item { display:flex; gap:12px; align-items:center; margin-bottom:14px; }
+    .order-item:last-child { margin-bottom:0; }
+    .oi-thumb { width:55px; height:55px; background:#f5f5f5; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:24px; border:1px solid #eee; flex-shrink:0; position:relative; }
+    .oi-qty { position:absolute; top:-6px; right:-6px; background:#c8973a; color:#fff; width:18px; height:18px; border-radius:50%; font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+    .oi-info { flex:1; }
+    .oi-name { font-size:13px; font-weight:700; color:#1a1a1a; }
+    .oi-variant { font-size:11px; color:#aaa; }
+    .oi-price { font-size:14px; font-weight:900; color:#c8973a; white-space:nowrap; }
+
+    .summary-rows { padding:16px 20px; }
+    .sum-row { display:flex; justify-content:space-between; font-size:14px; padding:7px 0; border-bottom:1px solid #f9f9f9; }
+    .sum-row .lbl { color:#777; }
+    .sum-row .val { font-weight:700; }
+    .sum-row.discount .val { color:#27ae60; }
+    .sum-row.grand { border-top:2px solid #f0f0f0; padding-top:14px; margin-top:5px; }
+    .sum-row.grand .lbl { font-size:16px; font-weight:700; color:#1a1a1a; }
+    .sum-row.grand .val { font-size:24px; font-weight:900; color:#c8973a; }
+
+    /* PLACE ORDER BTN */
+    .place-order-wrap { padding:0 20px 20px; }
+    .btn-place-order { display:block; width:100%; background:#27ae60; color:#fff; border:none; border-radius:8px; padding:17px; font-family:'Cairo',sans-serif; font-size:17px; font-weight:700; cursor:pointer; text-align:center; transition:.2s; }
+    .btn-place-order:hover { background:#219a53; }
+    .secure-note { display:flex; align-items:center; justify-content:center; gap:6px; font-size:11px; color:#aaa; margin-top:10px; }
+    .terms-note { font-size:12px; color:#aaa; text-align:center; margin-top:8px; line-height:1.6; }
+    .terms-note a { color:#c8973a; }
+
+    /* TRUST BADGES */
+    .trust-badges { background:#fff; border:1px solid #eee; border-radius:10px; padding:18px 20px; }
+    .trust-title { font-size:13px; font-weight:700; color:#1a1a1a; margin-bottom:14px; text-align:center; }
+    .trust-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .trust-item { display:flex; align-items:center; gap:8px; }
+    .trust-item i { color:#c8973a; font-size:18px; }
+    .trust-text { font-size:12px; color:#555; line-height:1.4; }
+
+    /* FOOTER */
+    footer { background:#1a1a1a; color:#888; padding:22px 0; margin-top:30px; }
+    .footer-wrap { max-width:1280px; margin:0 auto; padding:0 20px; text-align:center; font-size:13px; }
+    .footer-logo { font-size:22px; font-weight:900; color:#fff; margin-bottom:7px; }
+    .footer-logo span { color:#c8973a; }
+    .payment-icons { display:flex; gap:7px; justify-content:center; margin-top:10px; flex-wrap:wrap; }
+    .payment-icon { background:#2a2a2a; border-radius:4px; padding:4px 10px; font-size:11px; color:#ccc; }
+
+    /* SUCCESS MODAL */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:2000; display:none; align-items:center; justify-content:center; }
+    .modal-overlay.show { display:flex; }
+    .modal-box { background:#fff; border-radius:16px; padding:50px 40px; max-width:480px; width:90%; text-align:center; animation:fadeUp .4s ease; }
+    @keyframes fadeUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+    .modal-icon { font-size:70px; margin-bottom:15px; }
+    .modal-title { font-size:24px; font-weight:900; color:#1a1a1a; margin-bottom:10px; }
+    .modal-sub { font-size:14px; color:#777; line-height:1.8; margin-bottom:25px; }
+    .order-num { background:#f0faf5; border:1px solid #b7e9cc; border-radius:8px; padding:14px; margin-bottom:20px; }
+    .order-num .num { font-size:22px; font-weight:900; color:#27ae60; }
+    .modal-btn { display:block; background:#c8973a; color:#fff; border:none; border-radius:8px; padding:14px 35px; font-family:'Cairo',sans-serif; font-size:15px; font-weight:700; cursor:pointer; margin:0 auto; }
+
+    @media(max-width:900px){
+      .checkout-grid { grid-template-columns:1fr; }
+      .form-grid { grid-template-columns:1fr; }
+      .card-input-wrap { grid-template-columns:1fr; }
+      .trust-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="wrap">
+    <div><i class="fas fa-phone-alt" style="color:#c8973a;margin-left:5px;"></i> 01000000000</div>
+    <div style="display:flex;gap:20px;"><a href="#">مساعدة</a></div>
+  </div>
+</div>
+
+<header>
+  <div class="header-inner">
+    <div class="logo"><a href="index.html"><h1>زيدان<span>ستورز</span></h1></a></div>
+    <div class="checkout-secure">
+      <i class="fas fa-lock"></i> دفع آمن ومشفر
+    </div>
+  </div>
+</header>
+
+<!-- STEPS -->
+<div class="steps-wrap">
+  <div class="steps-inner">
+    <div class="step done">
+      <div class="step-circle"><i class="fas fa-check" style="font-size:11px;"></i></div>
+      <span class="step-label">السلة</span>
+    </div>
+    <div class="step-connector done"></div>
+    <div class="step active">
+      <div class="step-circle">2</div>
+      <span class="step-label">بيانات الشحن</span>
+    </div>
+    <div class="step-connector inactive"></div>
+    <div class="step active">
+      <div class="step-circle">3</div>
+      <span class="step-label">الدفع</span>
+    </div>
+    <div class="step-connector inactive"></div>
+    <div class="step inactive">
+      <div class="step-circle">4</div>
+      <span class="step-label">تأكيد الطلب</span>
+    </div>
+  </div>
+</div>
+
+<div class="breadcrumb">
+  <div class="wrap">
+    <a href="index.html">الرئيسية</a> ›
+    <a href="cart.html">السلة</a> ›
+    <strong style="color:#333;">إتمام الطلب</strong>
+  </div>
+</div>
+
+<div class="page-wrap">
+  <div class="checkout-grid">
+
+    <!-- LEFT: FORMS -->
+    <div class="checkout-form">
+
+      <!-- LOGIN PROMPT -->
+      <div class="login-prompt">
+        <i class="fas fa-user-circle" style="font-size:22px;color:#c8973a;"></i>
+        <span>عندك حساب؟ <a href="#">سجل دخول</a> لإتمام الطلب بشكل أسرع وتتبع طلباتك.</span>
+      </div>
+
+      <!-- BILLING / SHIPPING INFO -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="card-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <h3>بيانات الشحن</h3>
+        </div>
+        <div class="form-card-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="field-label">الاسم الأول <span class="required">*</span></label>
+              <input class="form-input" type="text" placeholder="مثال: محمد" value="محمد">
+            </div>
+            <div class="form-group">
+              <label class="field-label">الاسم الأخير <span class="required">*</span></label>
+              <input class="form-input" type="text" placeholder="مثال: أحمد" value="أحمد">
+            </div>
+            <div class="form-group full">
+              <label class="field-label">رقم الهاتف <span class="required">*</span></label>
+              <input class="form-input" type="tel" placeholder="01XXXXXXXXX" value="01012345678">
+              <span class="field-hint">سيُستخدم للتواصل بشأن الطلب</span>
+            </div>
+            <div class="form-group full">
+              <label class="field-label">البريد الإلكتروني</label>
+              <input class="form-input" type="email" placeholder="email@example.com">
+            </div>
+            <div class="form-group">
+              <label class="field-label">المحافظة <span class="required">*</span></label>
+              <select class="form-select">
+                <option>اختر المحافظة</option>
+                <option selected>القاهرة</option>
+                <option>الجيزة</option>
+                <option>الإسكندرية</option>
+                <option>المنوفية</option>
+                <option>القليوبية</option>
+                <option>الشرقية</option>
+                <option>الدقهلية</option>
+                <option>البحيرة</option>
+                <option>كفر الشيخ</option>
+                <option>الغربية</option>
+                <option>المنيا</option>
+                <option>أسيوط</option>
+                <option>سوهاج</option>
+                <option>قنا</option>
+                <option>الأقصر</option>
+                <option>أسوان</option>
+                <option>بورسعيد</option>
+                <option>السويس</option>
+                <option>الإسماعيلية</option>
+                <option>دمياط</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="field-label">المدينة / الحي <span class="required">*</span></label>
+              <input class="form-input" type="text" placeholder="مثال: مدينة نصر" value="مدينة نصر">
+            </div>
+            <div class="form-group full">
+              <label class="field-label">العنوان بالتفصيل <span class="required">*</span></label>
+              <input class="form-input" type="text" placeholder="الشارع، رقم العمارة، رقم الشقة" value="شارع عباس العقاد، عمارة 12، شقة 4">
+            </div>
+            <div class="form-group">
+              <label class="field-label">الدور (اختياري)</label>
+              <input class="form-input" type="text" placeholder="رقم الدور">
+            </div>
+            <div class="form-group">
+              <label class="field-label">علامة مميزة (اختياري)</label>
+              <input class="form-input" type="text" placeholder="مثال: بجوار مسجد...">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAYMENT METHODS -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="card-icon"><i class="fas fa-wallet"></i></div>
+          <h3>طريقة الدفع</h3>
+        </div>
+        <div class="form-card-body">
+          <div class="payment-methods">
+
+            <!-- VISA / MC / CARD -->
+            <div class="pay-method selected" onclick="selectPay(this)">
+              <div class="pay-method-header">
+                <input type="radio" name="pay" checked>
+                <div class="pay-method-icon pm-visa">VISA</div>
+                <div>
+                  <div class="pay-method-name">بطاقة بنكية</div>
+                  <div class="pay-method-sub">Visa / MasterCard / Meeza</div>
+                </div>
+                <div class="pay-badge-group">
+                  <span class="mini-badge" style="background:#1a1f71;color:#fff;border:none;">VISA</span>
+                  <span class="mini-badge" style="background:#eb001b;color:#fff;border:none;">MC</span>
+                  <span class="mini-badge" style="background:#009900;color:#fff;border:none;">Meeza</span>
+                </div>
+              </div>
+              <div class="pay-panel">
+                <div style="font-size:13px;font-weight:700;color:#555;margin-bottom:12px;">أدخل بيانات البطاقة</div>
+                <div class="card-input-wrap">
+                  <div class="form-group full">
+                    <label class="field-label">رقم البطاقة <span class="required">*</span></label>
+                    <input class="form-input card-number" type="text" placeholder="XXXX  XXXX  XXXX  XXXX" maxlength="19" oninput="formatCard(this)">
+                  </div>
+                  <div class="form-group full">
+                    <label class="field-label">اسم حامل البطاقة <span class="required">*</span></label>
+                    <input class="form-input" type="text" placeholder="كما هو مكتوب على البطاقة">
+                  </div>
+                  <div class="form-group">
+                    <label class="field-label">تاريخ الانتهاء <span class="required">*</span></label>
+                    <input class="form-input" type="text" placeholder="MM / YY" maxlength="7">
+                  </div>
+                  <div class="form-group">
+                    <label class="field-label">CVV <span class="required">*</span></label>
+                    <input class="form-input" type="text" placeholder="XXX" maxlength="4">
+                    <span class="field-hint">3 أرقام على ظهر البطاقة</span>
+                  </div>
+                </div>
+                <div class="card-logo-row">
+                  <div class="card-logo-item" style="background:#1a1f71;color:#fff;">VISA</div>
+                  <div class="card-logo-item" style="background:#eb001b;color:#fff;">MC</div>
+                  <div class="card-logo-item" style="background:#009900;color:#fff;">Meeza</div>
+                  <div style="margin-right:auto;font-size:11px;color:#27ae60;display:flex;align-items:center;gap:5px;"><i class="fas fa-lock"></i> تشفير SSL 256-bit</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- VODAFONE CASH -->
+            <div class="pay-method" onclick="selectPay(this)">
+              <div class="pay-method-header">
+                <input type="radio" name="pay">
+                <div class="pay-method-icon pm-voda">Voda</div>
+                <div>
+                  <div class="pay-method-name">فودافون كاش</div>
+                  <div class="pay-method-sub">دفع فوري عبر المحفظة</div>
+                </div>
+                <div class="pay-badge-group">
+                  <span class="mini-badge" style="background:#e60000;color:#fff;border:none;">🔴 فودافون</span>
+                </div>
+              </div>
+              <div class="pay-panel">
+                <div class="wallet-info">
+                  <strong>خطوات الدفع بفودافون كاش:</strong>
+                  <ol>
+                    <li>اضغط "تأكيد الطلب" وسيصلك SMS على رقمك المسجل</li>
+                    <li>افتح تطبيق فودافون كاش أو اتصل بـ <strong>*9#</strong></li>
+                    <li>اختر "دفع الفواتير" ← "خدمات إلكترونية" ← "Paymob"</li>
+                    <li>أدخل كود الدفع الذي وصل في الـ SMS</li>
+                    <li>أكد الدفع بالـ PIN الخاص بك</li>
+                  </ol>
+                  <div style="margin-top:10px;">
+                    <label class="field-label">رقم فودافون كاش <span class="required">*</span></label>
+                    <input class="form-input" type="tel" placeholder="01XXXXXXXXX" style="margin-top:5px;">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ETISALAT / WE CASH -->
+            <div class="pay-method" onclick="selectPay(this)">
+              <div class="pay-method-header">
+                <input type="radio" name="pay">
+                <div class="pay-method-icon" style="background:#ed7d31;color:#fff;">WE</div>
+                <div>
+                  <div class="pay-method-name">اتصالات / We كاش</div>
+                  <div class="pay-method-sub">المحفظة الإلكترونية</div>
+                </div>
+              </div>
+              <div class="pay-panel">
+                <div class="wallet-info">
+                  <strong>خطوات الدفع:</strong>
+                  <ol>
+                    <li>اضغط "تأكيد الطلب"</li>
+                    <li>اتصل بـ <strong>*777#</strong> أو افتح تطبيق اتصالات كاش</li>
+                    <li>اختر "دفع الفواتير" ← أدخل كود الدفع</li>
+                  </ol>
+                  <div style="margin-top:10px;">
+                    <label class="field-label">رقم اتصالات <span class="required">*</span></label>
+                    <input class="form-input" type="tel" placeholder="01XXXXXXXXX" style="margin-top:5px;">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fawry / Kiosk -->
+            <div class="pay-method" onclick="selectPay(this)">
+              <div class="pay-method-header">
+                <input type="radio" name="pay">
+                <div class="pay-method-icon pm-fawry">Fawry</div>
+                <div>
+                  <div class="pay-method-name">فوري / كيوسك</div>
+                  <div class="pay-method-sub">ادفع في أي محل فوري أو كيوسك</div>
+                </div>
+              </div>
+              <div class="pay-panel">
+                <div class="kiosk-info">
+                  <strong><i class="fas fa-info-circle" style="color:#c8973a;"></i> كيفية الدفع عبر فوري:</strong>
+                  <ol style="margin:10px 0 0 0;padding-right:18px;line-height:2;">
+                    <li>اضغط "تأكيد الطلب" وستحصل على كود الدفع</li>
+                    <li>اذهب لأقرب محل فوري أو ماكينة Fawry</li>
+                    <li>اختر "دفع الفواتير" ← اكتب "Paymob" أو كود 165</li>
+                    <li>أدخل كود الدفع ورقم هاتفك</li>
+                    <li>ادفع المبلغ واحتفظ بالإيصال</li>
+                  </ol>
+                  <p style="margin-top:8px;font-size:12px;color:#888;"><i class="fas fa-clock"></i> صالح لمدة 72 ساعة من إنشاء الطلب</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- COD -->
+            <div class="pay-method" onclick="selectPay(this)">
+              <div class="pay-method-header">
+                <input type="radio" name="pay">
+                <div class="pay-method-icon pm-cod">💵</div>
+                <div>
+                  <div class="pay-method-name">الدفع عند الاستلام (Cash)</div>
+                  <div class="pay-method-sub">ادفع وقت التوصيل</div>
+                </div>
+              </div>
+              <div class="pay-panel">
+                <div class="cod-info">
+                  <p><i class="fas fa-check-circle"></i> سيتواصل معك فريقنا لتأكيد الطلب قبل التوصيل</p>
+                  <p style="margin-top:8px;"><i class="fas fa-info-circle" style="color:#f59e0b;"></i> <strong>ملاحظة:</strong> مبلغ تأمين 200 ج.م يُحجز عند الطلب ويُرد عند الاستلام</p>
+                  <p style="margin-top:8px;font-size:12px;color:#aaa;"><i class="fas fa-map-marker-alt"></i> متاح في القاهرة والجيزة فقط</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDER NOTES -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="card-icon"><i class="fas fa-sticky-note"></i></div>
+          <h3>ملاحظات على الطلب</h3>
+          <span class="optional">اختياري</span>
+        </div>
+        <div class="form-card-body">
+          <textarea class="form-textarea" placeholder="أي ملاحظات خاصة بالتوصيل أو المنتج (مثال: الدور الأول يسار - اتصل قبل التوصيل)..."></textarea>
+        </div>
+      </div>
+
+    </div><!-- /checkout-form -->
+
+    <!-- RIGHT: SUMMARY -->
+    <div class="checkout-sidebar">
+
+      <!-- ORDER SUMMARY -->
+      <div class="summary-card">
+        <div class="summary-header">
+          <span><i class="fas fa-receipt"></i> ملخص طلبك</span>
+          <button class="toggle-items" onclick="toggleItems()"><i class="fas fa-eye"></i> عرض المنتجات</button>
+        </div>
+
+        <div class="order-items" id="orderItems">
+          <div class="order-item">
+            <div class="oi-thumb">🛋️<span class="oi-qty">1</span></div>
+            <div class="oi-info">
+              <div class="oi-name">كنبة نيو كلاسيك 280سم</div>
+              <div class="oi-variant">بني داكن / 280سم</div>
+            </div>
+            <div class="oi-price">5,950 ج.م</div>
+          </div>
+          <div class="order-item">
+            <div class="oi-thumb">🛏️<span class="oi-qty">1</span></div>
+            <div class="oi-info">
+              <div class="oi-name">مرتبة كومفورت بيلو توب</div>
+              <div class="oi-variant">160×200 سم</div>
+            </div>
+            <div class="oi-price">4,530 ج.م</div>
+          </div>
+          <div class="order-item">
+            <div class="oi-thumb">😴<span class="oi-qty">2</span></div>
+            <div class="oi-info">
+              <div class="oi-name">مخدة Pure Double Net</div>
+              <div class="oi-variant">قياسي × 2</div>
+            </div>
+            <div class="oi-price">398 ج.م</div>
+          </div>
+        </div>
+
+        <div class="summary-rows">
+          <div class="sum-row"><span class="lbl">المجموع الفرعي</span><span class="val">10,878 ج.م</span></div>
+          <div class="sum-row discount"><span class="lbl"><i class="fas fa-tag"></i> كود ZIDAN10</span><span class="val" id="discSummary" style="display:none;">−1,088 ج.م</span><span class="val" id="noDisc">—</span></div>
+          <div class="sum-row"><span class="lbl">الشحن</span><span class="val" style="color:#27ae60;">مجاني</span></div>
+          <div class="sum-row grand"><span class="lbl">الإجمالي</span><span class="val">10,878 ج.م</span></div>
+        </div>
+
+        <div class="place-order-wrap">
+          <button class="btn-place-order" onclick="placeOrder()">
+            <i class="fas fa-check-circle" style="margin-left:6px;"></i>
+            تأكيد الطلب والدفع
+          </button>
+          <div class="secure-note"><i class="fas fa-lock"></i> بياناتك محمية ومشفرة بالكامل</div>
+          <p class="terms-note">بالضغط على "تأكيد الطلب" أنت توافق على <a href="#">سياسة الشراء</a> و<a href="#">شروط الخدمة</a></p>
+        </div>
+      </div>
+
+      <!-- TRUST BADGES -->
+      <div class="trust-badges">
+        <div class="trust-title">لماذا زيدان ستورز؟</div>
+        <div class="trust-grid">
+          <div class="trust-item"><i class="fas fa-shield-alt"></i><div class="trust-text"><strong>دفع آمن 100%</strong><br>تشفير SSL</div></div>
+          <div class="trust-item"><i class="fas fa-undo-alt"></i><div class="trust-text"><strong>استرجاع 14 يوم</strong><br>في حالة عيوب الصنعة</div></div>
+          <div class="trust-item"><i class="fas fa-truck"></i><div class="trust-text"><strong>توصيل لجميع المحافظات</strong><br>3–7 أيام عمل</div></div>
+          <div class="trust-item"><i class="fas fa-medal"></i><div class="trust-text"><strong>ضمان سنة</strong><br>على جميع المنتجات</div></div>
+          <div class="trust-item"><i class="fab fa-whatsapp" style="color:#25d366;"></i><div class="trust-text"><strong>دعم WhatsApp</strong><br>24/7</div></div>
+          <div class="trust-item"><i class="fas fa-star"></i><div class="trust-text"><strong>+5000 عميل راضي</strong><br>تقييم 4.9 / 5</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal-box">
+    <div class="modal-icon">🎉</div>
+    <div class="modal-title">تم تأكيد طلبك!</div>
+    <p class="modal-sub">شكراً لثقتك في زيدان ستورز.<br>سيتواصل معك فريقنا خلال ساعات لتحديد موعد التوصيل.</p>
+    <div class="order-num">
+      <div style="font-size:13px;color:#888;margin-bottom:4px;">رقم طلبك</div>
+      <div class="num">#ZS-2024-08741</div>
+    </div>
+    <button class="modal-btn" onclick="document.getElementById('successModal').classList.remove('show')">
+      <i class="fas fa-home" style="margin-left:6px;"></i> العودة للرئيسية
+    </button>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-wrap">
+    <div class="footer-logo">زيدان<span>ستورز</span></div>
+    <p>جميع الحقوق محفوظة © 2024 زيدان ستورز</p>
+    <div class="payment-icons">
+      <span class="payment-icon">VISA</span>
+      <span class="payment-icon">MasterCard</span>
+      <span class="payment-icon">Paymob</span>
+      <span class="payment-icon">فودافون كاش</span>
+      <span class="payment-icon">فوري</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function selectPay(el) {
+    document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
+    document.querySelectorAll('.pay-method input[type=radio]').forEach(r => r.checked = false);
+    el.classList.add('selected');
+    el.querySelector('input[type=radio]').checked = true;
+  }
+
+  function toggleItems() {
+    const items = document.getElementById('orderItems');
+    const btn = document.querySelector('.toggle-items');
+    if (items.style.display === 'none') {
+      items.style.display = 'block';
+      btn.innerHTML = '<i class="fas fa-eye-slash"></i> إخفاء';
+    } else {
+      items.style.display = 'none';
+      btn.innerHTML = '<i class="fas fa-eye"></i> عرض المنتجات';
+    }
+  }
+
+  function formatCard(inp) {
+    let v = inp.value.replace(/\D/g, '').substring(0, 16);
+    inp.value = v.replace(/(.{4})/g, '$1  ').trim();
+  }
+
+  function placeOrder() {
+    const btn = document.querySelector('.btn-place-order');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-left:6px;"></i> جارٍ تأكيد الطلب...';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.innerHTML = '<i class="fas fa-check-circle" style="margin-left:6px;"></i> تأكيد الطلب والدفع';
+      btn.disabled = false;
+      document.getElementById('successModal').classList.add('show');
+    }, 2500);
+  }
+</script>
+</body>
+</html>
